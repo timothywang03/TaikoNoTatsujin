@@ -43,3 +43,14 @@ class DDon(Note):
 class DKat(Note):
     def __init__(self, type='Dkat', noteStart, noteEnd):
         super().__init__(type, noteStart, noteEnd)
+
+class Roll(Note):
+    def __init__(self, type='Dkat', noteStart, noteEnd):
+        super().__init__(type, noteStart, noteEnd)
+        self.roll_score = 0
+
+    def rollCount(self, rolls):
+        self.roll_score = rolls
+
+    def getRollScore(self):
+        return self.roll_score
