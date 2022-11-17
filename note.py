@@ -1,9 +1,4 @@
-class Level:
-    def __init__(self, notes, length):
-        self.notes = notes      # notes will be in format (timestamp, noteType)
-        self.length = length    # indicates the length of the level (in secs)
-        self.difficulty = None  # TODO: create algorithm that will assess the diff
-
+from cmu_112_graphics import *
 
 class Note:
     def __init__(self, type, noteStart, noteEnd):
@@ -23,6 +18,12 @@ class Note:
 
     def getNoteEnd(self):
         return self.noteEnd
+
+    def hitScore(self):
+        pass  # return the score from hitting a note based on accuracy
+
+    def __repr__(self):
+        return f'{self.type}: {self.noteStart}'
 
 
 class Don(Note):
@@ -54,3 +55,20 @@ class Roll(Note):
 
     def getRollScore(self):
         return self.roll_score
+
+class DrawNote:
+    def __init__(self):
+        self.donImage = 'image_folder/don.png'
+        self.katImage = 'image_folder/kat.png'
+        self.DdonImage = 'image_folder/Ddon.png'
+        self.DkatImage = 'image_folder/Dkat.png'
+
+    def getNoteImage(self, noteType):
+        if noteType == 'don':
+            return self.donImage
+        if noteType == 'kat':
+            return self.katImage
+        if noteType == 'Ddon':
+            return self.DdonImage
+        if noteType == 'Dkat';
+            return self.DkatImage
