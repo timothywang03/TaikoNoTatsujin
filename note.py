@@ -27,26 +27,26 @@ class Note:
 
 
 class Don(Note):
-    def __init__(self, type='don', noteStart, noteEnd):
+    def __init__(self, noteStart, noteEnd, type='don'):
         super().__init__(type, noteStart, noteEnd)
 
 
 class Kat(Note):
-    def __init__(self, type='kat', noteStart, noteEnd):
+    def __init__(self, noteStart, noteEnd, type='kat'):
         super().__init__(type, noteStart, noteEnd)
 
 
 class DDon(Note):
-    def __init__(self, type='Ddon', noteStart, noteEnd):
+    def __init__(self, noteStart, noteEnd, type='Ddon'):
         super().__init__(type, noteStart, noteEnd)
 
 
 class DKat(Note):
-    def __init__(self, type='Dkat', noteStart, noteEnd):
+    def __init__(self, noteStart, noteEnd, type='Dkat'):
         super().__init__(type, noteStart, noteEnd)
 
 class Roll(Note):
-    def __init__(self, type='Dkat', noteStart, noteEnd):
+    def __init__(self, noteStart, noteEnd, type='Dkat'):
         super().__init__(type, noteStart, noteEnd)
         self.roll_score = 0
 
