@@ -1,9 +1,13 @@
 import pygame
 from note import Don, Kat, DDon, DKat, Roll
 from level import Level
-import creatorUI
 import time
 import pygame
 
-level = Level('Yoru ni Kakeru', [], 281, 'easy')
-level.addNote(Don(3, 3.2))
+
+def drawCreatorUI(app, canvas):
+    app.notes = dict()
+    app.ui.drawBackground(app, canvas)
+    app.ui.drawTimeline(app, canvas)
+    app.ui.drawNoteSelection(app, canvas)
+    app.ui.drawScrollBar(app, canvas)

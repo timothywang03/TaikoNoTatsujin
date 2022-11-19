@@ -27,48 +27,38 @@ class Note:
 
 
 class Don(Note):
-    def __init__(self, noteStart, noteEnd, type='don'):
+    def __init__(self, app, noteStart, noteEnd, type='don'):
         super().__init__(type, noteStart, noteEnd)
+        app.don = app.loadImage('image_folder/don.png')
 
 
 class Kat(Note):
-    def __init__(self, noteStart, noteEnd, type='kat'):
+    def __init__(self, app, noteStart, noteEnd, type='kat'):
         super().__init__(type, noteStart, noteEnd)
+        app.kat = app.loadImage('image_folder/kat.png')
 
 
 class DDon(Note):
-    def __init__(self, noteStart, noteEnd, type='Ddon'):
+    def __init__(self, app, noteStart, noteEnd, type='Ddon'):
         super().__init__(type, noteStart, noteEnd)
+        app.Ddon = app.loadImage('image_folder/Ddon.png')
 
 
 class DKat(Note):
-    def __init__(self, noteStart, noteEnd, type='Dkat'):
+    def __init__(self, app, noteStart, noteEnd, type='Dkat'):
         super().__init__(type, noteStart, noteEnd)
+        app.Dkat = app.loadImage('image_folder/Dkat.png')
 
 class Roll(Note):
-    def __init__(self, noteStart, noteEnd, type='Dkat'):
+    def __init__(self, app, noteStart, noteEnd, type='Dkat'):
         super().__init__(type, noteStart, noteEnd)
-        self.roll_score = 0
+        app.roll = app.loadImage('image_folder/roll.png')
+        app.rollEnd = app.loadImage('image_folder/rollEnd.png')
+        app.rollLine = app.loadImage('image_folder/rollLine.png')
+        app.roll_score = 0
 
     def rollCount(self, rolls):
         self.roll_score = rolls
 
     def getRollScore(self):
         return self.roll_score
-
-class DrawNote:
-    def __init__(self):
-        self.donImage = 'image_folder/don.png'
-        self.katImage = 'image_folder/kat.png'
-        self.DdonImage = 'image_folder/Ddon.png'
-        self.DkatImage = 'image_folder/Dkat.png'
-
-    def getNoteImage(self, noteType):
-        if noteType == 'don':
-            return self.donImage
-        if noteType == 'kat':
-            return self.katImage
-        if noteType == 'Ddon':
-            return self.DdonImage
-        if noteType == 'Dkat';
-            return self.DkatImage

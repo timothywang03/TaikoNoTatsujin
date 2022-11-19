@@ -25,5 +25,5 @@ class Level:
     def getSong(self):
         return self.song
 
-    def addNote(self, note):
-        self.notes.append(note)
+    def addNote(self, timestamp, note):
+        self.notes[timestamp] = note
