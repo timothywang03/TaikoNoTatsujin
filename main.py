@@ -14,6 +14,5 @@ def appStarted(app):
         app.ui = creatorUI.UI(app)
         app.level = Level('Yoru Ni Kakeru', dict(), 281, 'yoru_ni_kakeru.mp3')
         app.currently_selected = None
-        app.scrollPos = 0
 
 runApp(width=1280, height=800)

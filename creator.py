@@ -18,7 +18,7 @@ def creator_mousePressed(app, event):
             app.currently_selected = 'Dkat'
         if 14 <= event.y <= 43 and app.scrollx <= event.x <= app.scrollx + 3:
             app.currently_selected = 'scrollMarker'
-            
+
     if app.currently_selected in app.noteTypes:
         if app.hover is not None:
             if app.currently_selected == 'don':
@@ -36,6 +36,8 @@ def creator_mousePressed(app, event):
             elif app.currently_selected == 'roll':
                 app.level.addNote(event.x + app.scrollConstant * app.scrollx, \
                 Note('roll', event.x + app.scrollConstant * app.scrollx))
+            app.currently_selected = None
+            app.hover = None
 
 def creator_mouseMoved(app, event):
     if app.currently_selected in app.noteTypes:
@@ -58,6 +60,7 @@ def creator_redrawAll(app, canvas):
     app.ui.drawNoteSelection(app, canvas)
     app.ui.drawScrollBar(app, canvas)
     app.ui.drawScrollMarker(app, canvas)
+    for k, v in app.level.getNotes().items():
+        app.ui.drawNote(app, canvas, v.getType(), k)
     if app.currently_selected in app.noteTypes and app.hover is not None:
         app.ui.drawNote(app, canvas, app.currently_selected, app.hover)
-    print(app.level.getNotes())

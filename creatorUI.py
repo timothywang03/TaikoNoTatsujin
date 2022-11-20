@@ -17,7 +17,7 @@ class UI:
         # SCROLL BAR
         app.scrollBar = ImageTk.PhotoImage(app.loadImage('image_folder/scrollBar.png'))
         app.scrollMarker = ImageTk.PhotoImage(app.loadImage('image_folder/scrollMarker.png'))
-        app.scrollx = 190   # the default level start position
+        app.scrollx = 0   # the default level start position
         app.scrollConstant = 5
 
         # MISCELLANIOUS
@@ -52,7 +52,7 @@ class UI:
             canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 80/44)))
 
     def drawScrollBar(self, app, canvas):
-        canvas.create_image(190, 23, anchor=NW, image=app.scrollBar)
+        canvas.create_image(190 + app.scrollx, 23, anchor=NW, image=app.scrollBar)
 
     def drawScrollMarker(self, app, canvas):
         canvas.create_image(app.scrollx, 14, anchor=NW, image=app.scrollMarker)

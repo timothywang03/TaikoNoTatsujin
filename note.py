@@ -23,7 +23,7 @@ class Note:
         pass  # return the score from hitting a note based on accuracy
 
     def __repr__(self):
-        return f'{self.type}: {self.noteStart}'
+        return f'({self.type}, {self.noteStart})'
 
 
 class Roll(Note):
