@@ -40,6 +40,10 @@ def creator_mousePressed(app, event):
             app.currently_selected = None
             app.hover = None
 
+def creator_keyPressed(app, event):
+    if event.key == 'Escape':
+        app.currently_selected = None
+
 def creator_mouseMoved(app, event):
     if app.currently_selected in app.noteTypes:
         if 250 <= event.y <= 400:
