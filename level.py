@@ -1,9 +1,10 @@
 class Level:
-    def __init__(self, name, notes, length, song):
+    def __init__(self, name, notes, length, bpm, song):
         self.name = name
         self.notes = notes      # notes will be in format (timestamp, noteType)
         self.length = length    # indicates the length of the level (in secs)
         self.difficulty = None  # TODO: create algorithm that will assess the diff
+        self.bpm = bpm
         self.song = None
         self.best_score = 0
         self.ok = 0
@@ -15,6 +16,12 @@ class Level:
 
     def getNotes(self):
         return self.notes
+
+    def getLength(self):
+        return self.length
+
+    def getBpm(self):
+        return self.bpm
 
     def getBestScore(self):
         return self.best_score
