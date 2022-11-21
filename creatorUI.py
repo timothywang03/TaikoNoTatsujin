@@ -3,7 +3,7 @@ from note import Note, Roll
 
 class UI:
     def __init__(self, app):
-        # NOTE CONSTANTS
+        # NOTE CONSTANTS    # CITE IMAGES
         app.don = app.loadImage('image_folder/don.png')
         app.kat = app.loadImage('image_folder/kat.png')
         app.roll = app.loadImage('image_folder/roll.png')
