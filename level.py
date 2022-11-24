@@ -1,3 +1,5 @@
+import pygame
+
 class Level:
     def __init__(self, name, notes, length, bpm, song):
         self.name = name
@@ -5,7 +7,7 @@ class Level:
         self.length = length    # indicates the length of the level (in secs)
         self.difficulty = None  # TODO: create algorithm that will assess the diff
         self.bpm = bpm
-        self.song = None
+        self.song = song
         self.best_score = 0
         self.ok = 0
         self.good = 0
@@ -31,6 +33,10 @@ class Level:
 
     def getSong(self):
         return self.song
+
+    def initiateSong(self, app):
+        pygame.mixer.init()
+        app.song = pygame.mixer.music.load(f'music_folder/{self.song}')
 
     def addNote(self, timestamp, note):
         self.notes[timestamp] = note
