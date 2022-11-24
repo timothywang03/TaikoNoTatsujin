@@ -22,7 +22,7 @@ class UI:
         app.scrollx = 0   # the default level start position
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
-        app.pixelsPerBeat = 60
+        app.pixelsPerBeat = app.level.getBpm()
         app.reached_middle = False
         app.currently_selected = None
 
@@ -96,9 +96,9 @@ class UI:
             app.reached_middle = True
 
         if app.reached_middle is False:
-            app.indicatorx += 6.5
+            app.indicatorx += app.level.getBpm() / 600 * app.pixelsPerBeat
         else:
-            app.scrollx += 0.32028
+            app.scrollx += (app.level.getBpm() / 600 * app.pixelsPerBeat) / (app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat) * 900
             self.calcFrame(app)
 
         if app.scrollx >= 897:
