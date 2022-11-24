@@ -25,6 +25,7 @@ class UI:
         app.pixelsPerBeat = app.level.getBpm()
         app.reached_middle = False
         app.currently_selected = None
+        app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/beatLine.png'))
 
         # MUSIC
         app.level.initiateSong(app)
@@ -32,6 +33,11 @@ class UI:
         app.indicatorx = 0
         app.timerDelay = 10
         app.musicStarted = False
+
+        # ERROR MESSAGES
+        app.overlapError = ImageTk.PhotoImage(app.loadImage('image_folder/overlapError.png'))
+        app.playbackError = ImageTk.PhotoImage(app.loadImage('image_folder/playbackError.png'))
+        app.error = None
 
         # MISCELLANIOUS
         app.noteBar = ImageTk.PhotoImage(app.loadImage('image_folder/noteBar.png'))
@@ -98,7 +104,7 @@ class UI:
         if app.reached_middle is False:
             app.indicatorx += app.level.getBpm() / 600 * app.pixelsPerBeat
         else:
-            app.scrollx += (app.level.getBpm() / 600 * app.pixelsPerBeat) / (app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat) * 900
+            app.scrollx += (1/600) / (app.level.getLength() / 60) * 900
             self.calcFrame(app)
 
         if app.scrollx >= 897:
@@ -116,11 +122,21 @@ class UI:
     def drawErrorBox(self, app, canvas):
         canvas.create_image(183, 429, anchor=NW, image=app.errorBox)
 
+    def drawError(self, app, canvas, error):
+        if error == 'overlap':
+            canvas.create_image(388, 444, anchor=NW, image=app.overlapError)
+        elif error == 'playback':
+            canvas.create_image(368, 476, anchor=NW, image=app.playbackError)
+
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)
 
     def drawIndicator(self, app, canvas, x):
-        canvas.create_image(x, 250, anchor=NW, image=app.indicator)
+        canvas.create_image(x, 246, anchor=NW, image=app.indicator)
+
+    def drawBeatlines(self, app, canvas):
+        for x in range(0, int(app.level.getBpm() * app.level.getLength() / 60) * app.pixelsPerBeat, app.pixelsPerBeat):
+            canvas.create_image(x, 250, anchor=NW, image=app.beatLine)
 
     def setBackground(self, app, file):
         app.background = app.loadImage(file)

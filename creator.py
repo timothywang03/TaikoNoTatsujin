@@ -6,8 +6,12 @@ import time
 
 def creator_mousePressed(app, event):
     if app.currently_selected == 'playButton':
-        app.currently_selected = None
-        pygame.mixer.music.pause()
+        if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
+            app.currently_selected = None
+            pygame.mixer.music.pause()
+            app.error = None
+        else:
+            app.error = 'playback'
 
     elif app.currently_selected is None:
         if 243 <= event.x <= 323 and 658 <= event.y <= 738:
@@ -59,6 +63,9 @@ def creator_mousePressed(app, event):
                 if app.currently_selected != 'rollEnd':
                     app.currently_selected = None
                     app.hover = None
+                app.error = None
+            else:
+                app.error = 'overlap'
 
 def creator_keyPressed(app, event):
     if event.key == 'Escape':
@@ -101,6 +108,8 @@ def creator_redrawAll(app, canvas):
     app.ui.drawScrollMarker(app, canvas)
     app.ui.drawErrorBox(app, canvas)
     app.ui.drawPlayButton(app, canvas)
+    app.ui.drawBeatlines(app, canvas)
+    app.ui.drawError(app, canvas, app.error)
 
     for timestamp, note in app.level.getNotes().items():
         if note.getHit() is False:
