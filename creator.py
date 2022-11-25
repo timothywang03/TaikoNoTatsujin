@@ -5,9 +5,11 @@ import pygame
 import time
 
 def creator_mousePressed(app, event):
+    print(app.frameLeft)
     if app.currently_selected == 'playButton':
         if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
             app.currently_selected = None
+            app.reached_middle = False
             pygame.mixer.music.pause()
             app.error = None
         else:
@@ -28,11 +30,8 @@ def creator_mousePressed(app, event):
             app.currently_selected = 'scrollMarker'
         if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
             app.currently_selected = 'playButton'
-            if app.musicStarted is True:
-                pygame.mixer.music.unpause()
-            else:
-                pygame.mixer.music.play()
-                app.musicStarted = True
+            app.indicatorx = app.frameLeft
+            pygame.mixer.music.play(0, 281 * app.frameLeft / (app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat))
 
     if app.currently_selected in app.noteTypes:
         if app.currently_selected == 'rollEnd':
@@ -110,6 +109,7 @@ def creator_redrawAll(app, canvas):
     app.ui.drawPlayButton(app, canvas)
     app.ui.drawBeatlines(app, canvas)
     app.ui.drawError(app, canvas, app.error)
+    app.ui.drawIndicator(app, canvas)
 
     for timestamp, note in app.level.getNotes().items():
         if note.getHit() is False:
@@ -122,8 +122,3 @@ def creator_redrawAll(app, canvas):
             app.ui.drawNote(app, canvas, app.currently_selected, app.rollStart, app.hover)
         else:
             app.ui.drawNote(app, canvas, app.currently_selected, app.hover)
-
-    if app.reached_middle is False:
-        app.ui.drawIndicator(app, canvas, app.indicatorx)
-    else:
-        app.ui.drawIndicator(app, canvas, 640)

@@ -101,11 +101,10 @@ class UI:
         if app.indicatorx >= app.frameLeft + 640:
             app.reached_middle = True
 
-        if app.reached_middle is False:
-            app.indicatorx += app.level.getBpm() / 600 * app.pixelsPerBeat
-        else:
+        if app.reached_middle is True:
             app.scrollx += (1/600) / (app.level.getLength() / 60) * 900
             self.calcFrame(app)
+        app.indicatorx += app.level.getBpm() / 600 * app.pixelsPerBeat
 
         if app.scrollx >= 897:
             app.currently_selected = None
@@ -131,8 +130,8 @@ class UI:
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)
 
-    def drawIndicator(self, app, canvas, x):
-        canvas.create_image(x, 246, anchor=NW, image=app.indicator)
+    def drawIndicator(self, app, canvas):
+        canvas.create_image(app.indicatorx - app.frameLeft, 246, anchor=NW, image=app.indicator)
 
     def drawBeatlines(self, app, canvas):
         for x in range(0, int(app.level.getBpm() * app.level.getLength() / 60) * app.pixelsPerBeat, app.pixelsPerBeat):
