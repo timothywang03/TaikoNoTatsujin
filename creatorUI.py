@@ -35,6 +35,7 @@ class UI:
         app.musicStarted = False
 
         # ERROR MESSAGES
+        app.directions = ImageTk.PhotoImage(app.loadImage('image_folder/directions.png'))
         app.overlapError = ImageTk.PhotoImage(app.loadImage('image_folder/overlapError.png'))
         app.playbackError = ImageTk.PhotoImage(app.loadImage('image_folder/playbackError.png'))
         app.error = None
@@ -78,6 +79,7 @@ class UI:
                 canvas.create_image(y, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollLine, 80/44)))
             if end - 44 > x + 44: canvas.create_image(end - 44, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 80/44)))
             self.drawNote(app, canvas, 'roll', x)
+
     def drawScrollBar(self, app, canvas):
         canvas.create_image(190, 23, anchor=NW, image=app.scrollBar)
 
@@ -93,8 +95,9 @@ class UI:
 
     def checkOverlap(self, app, x):
         for y in app.level.getNotes().values():
-            if y.getNoteStart() <= x <= y.getEnd():
-                return True
+            if y.getType() == 'roll' or y.getType() == 'rollEnd':
+                if y.getNoteStart() <= x <= y.getEnd():
+                    return True
         return False
 
     def playback(self, app):
@@ -126,6 +129,8 @@ class UI:
             canvas.create_image(388, 444, anchor=NW, image=app.overlapError)
         elif error == 'playback':
             canvas.create_image(368, 476, anchor=NW, image=app.playbackError)
+        else:
+            canvas.create_image(221, 450, anchor=NW, image=app.directions)
 
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)

@@ -121,7 +121,8 @@ def creator_redrawAll(app, canvas):
     app.ui.drawError(app, canvas, app.error)
     app.ui.drawIndicator(app, canvas)
 
-    for timestamp, note in app.level.getNotes().items():
+    for timestamp in sorted(app.level.getNotes(), reverse=True):
+        note = app.level.getNotes()[timestamp]
         if note.getHit() is False:
             app.ui.drawNote(app, canvas, note.getType(), timestamp - app.frameLeft, note.getEnd() - app.frameLeft)
             if note.getType() == 'roll':
