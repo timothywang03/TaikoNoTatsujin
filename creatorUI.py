@@ -22,7 +22,7 @@ class UI:
         app.scrollx = 0   # the default level start position
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
-        app.pixelsPerBeat = app.level.getBpm()
+        app.pixelsPerBeat = 90
         app.reached_middle = False
         app.currently_selected = None
         app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/beatLine.png'))

@@ -5,7 +5,6 @@ import pygame
 import time
 
 def creator_mousePressed(app, event):
-    print(app.frameLeft)
     if app.currently_selected == 'playButton':
         if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
             app.currently_selected = None
@@ -16,6 +15,11 @@ def creator_mousePressed(app, event):
             app.error = 'playback'
 
     elif app.currently_selected is None:
+        if 250 <= event.y <= 400:
+            for k, v in app.level.getNotes().items():
+                if v.getNoteStart() <= app.frameLeft + event.x <= v.getEnd():
+                    app.currently_selected = k
+
         if 243 <= event.x <= 323 and 658 <= event.y <= 738:
             app.currently_selected = 'don'
         if 401 <= event.x <= 481 and 658 <= event.y <= 738:
@@ -43,16 +47,16 @@ def creator_mousePressed(app, event):
             if app.ui.checkOverlap(app, app.hover + app.frameLeft) is False:
                 if app.currently_selected == 'don':
                     app.level.addNote(event.x + app.frameLeft, \
-                    Note('don', event.x + app.frameLeft))
+                    Note('don', event.x + app.frameLeft, event.x + app.frameLeft + 80))
                 elif app.currently_selected == 'kat':
                     app.level.addNote(event.x + app.frameLeft, \
-                    Note('kat', event.x + app.frameLeft))
+                    Note('kat', event.x + app.frameLeft, event.x + app.frameLeft + 80))
                 elif app.currently_selected == 'Ddon':
                     app.level.addNote(event.x + app.frameLeft, \
-                    Note('Ddon', event.x + app.frameLeft))
+                    Note('Ddon', event.x + app.frameLeft, event.x + app.frameLeft + 121))
                 elif app.currently_selected == 'Dkat':
                     app.level.addNote(event.x + app.frameLeft, \
-                    Note('Dkat', event.x + app.frameLeft))
+                    Note('Dkat', event.x + app.frameLeft, event.x + app.frameLeft + 121))
                 elif app.currently_selected == 'roll':
                     app.level.addNote(event.x + app.frameLeft, \
                     Note('roll', event.x + app.frameLeft))
@@ -65,6 +69,7 @@ def creator_mousePressed(app, event):
                 app.error = None
             else:
                 app.error = 'overlap'
+    print(app.currently_selected)
 
 def creator_keyPressed(app, event):
     if event.key == 'Escape':
@@ -72,6 +77,11 @@ def creator_keyPressed(app, event):
         app.hover = None
     if event.key == 's':
         app.ui.saveLevel(app)
+    if event.key == 'BackSpace':
+        print(type(app.currently_selected))
+        if type(app.currently_selected) == int or type(app.currently_selected == float):
+            app.level.removeNote(app.currently_selected)
+            app.currently_selected = None
 
 def creator_mouseMoved(app, event):
     if app.currently_selected in app.noteTypes:

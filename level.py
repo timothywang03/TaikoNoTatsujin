@@ -41,5 +41,8 @@ class Level:
     def addNote(self, timestamp, note):
         self.notes[timestamp] = note
 
+    def removeNote(self, timestamp):
+        del self.notes[timestamp]
+
     def __str__(self):
         return f'{self.name}, {len(self.notes)}'
