@@ -1,4 +1,5 @@
 import pygame
+from note import Note, Roll
 
 class Level:
     def __init__(self, name, notes, length, bpm, song):
@@ -43,6 +44,24 @@ class Level:
 
     def removeNote(self, timestamp):
         del self.notes[timestamp]
+
+    def saveLevel(self):
+        f = open(f'{self.name}.txt', 'w')
+        f.write(f'Level Name: {self.name}\n')
+        f.write(f'BPM: {self.bpm}\n')
+        f.write(f'Song: {self.song}\n')
+        f.write(f'Best Score: {self.best_score}\n')
+        for k, v in self.notes.items():
+            f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
+
+    def loadNotes(self):
+        try:
+            f = open(f'{self.name}.txt', 'r')
+        except:
+            return -1
+        for line in f.readlines()[4:]:
+            line = line.split()
+            self.notes[float(line[1])] = Note(line[0], float(line[1]), float(line[2]))
 
     def __str__(self):
         return f'{self.name}, {len(self.notes)}'

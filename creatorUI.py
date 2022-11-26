@@ -5,6 +5,8 @@ import time
 
 class UI:
     def __init__(self, app):
+        app.level.loadNotes()
+
         # NOTE CONSTANTS    # CITE IMAGES
         app.don = app.loadImage('image_folder/don.png')
         app.kat = app.loadImage('image_folder/kat.png')
@@ -111,15 +113,6 @@ class UI:
 
         if app.scrollx >= 897:
             app.currently_selected = None
-
-    def saveLevel(self, app):
-        f = open(f'{app.level.getName()}.txt', 'w')
-        f.write(f'Level Name: {app.level.getName()}\n')
-        f.write(f'BPM: {app.level.getBpm()}\n')
-        f.write(f'Song: {app.level.getSong()}\n')
-        f.write(f'Best Score: {app.level.getBestScore()}\n')
-        for k, v in app.level.getNotes().items():
-            f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
 
     def drawErrorBox(self, app, canvas):
         canvas.create_image(183, 429, anchor=NW, image=app.errorBox)

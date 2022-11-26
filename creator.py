@@ -76,7 +76,7 @@ def creator_keyPressed(app, event):
         app.currently_selected = None
         app.hover = None
     if event.key == 's':
-        app.ui.saveLevel(app)
+        app.level.saveLevel()
     if event.key == 'BackSpace':
         print(type(app.currently_selected))
         if type(app.currently_selected) == int or type(app.currently_selected == float):
