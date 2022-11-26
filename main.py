@@ -12,7 +12,7 @@ def appStarted(app):
     app.height = app.height
     app.mode = 'creator'
     app.level = Level('Yoru Ni Kakeru', dict(), 281, 130, 'yoru_ni_kakeru.mp3') # CITE
-    #app.level.loadNotes()
+    app.level.loadNotes()
     if app.mode == 'creator':
         app.ui = creatorUI.UI(app)
     if app.mode == 'player':

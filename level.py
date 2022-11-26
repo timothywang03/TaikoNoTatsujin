@@ -12,7 +12,6 @@ class Level:
         self.best_score = 0
         self.ok = 0
         self.good = 0
-        self.great = 0
 
     def calcScore(self):
         pass

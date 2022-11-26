@@ -5,7 +5,6 @@ import time
 
 class UI:
     def __init__(self, app):
-        app.level.loadNotes()
 
         # NOTE CONSTANTS    # CITE IMAGES
         app.don = app.loadImage('image_folder/don.png')
@@ -51,7 +50,6 @@ class UI:
         app.errorMessage = ''
         app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/playButton.png'))
 
-        print(app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat)
 
     def drawTimeline(self, app, canvas):
         canvas.create_rectangle(0, 250, 1280, 400, fill='#202020')
@@ -132,8 +130,8 @@ class UI:
         canvas.create_image(app.indicatorx - app.frameLeft, 246, anchor=NW, image=app.indicator)
 
     def drawBeatlines(self, app, canvas):
-        for x in range(0, int(app.level.getBpm() * app.level.getLength() / 60) * app.pixelsPerBeat, app.pixelsPerBeat):
-            canvas.create_image(x, 250, anchor=NW, image=app.beatLine)
+        for x in range(0, int(app.level.getBpm() * app.level.getLength() / 60) * app.pixelsPerBeat, app.pixelsPerBeat * 4):
+            canvas.create_image(x - app.frameLeft, 250, anchor=NW, image=app.beatLine)
 
     def setBackground(self, app, file):
         app.background = app.loadImage(file)

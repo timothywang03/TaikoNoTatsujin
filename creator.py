@@ -69,7 +69,6 @@ def creator_mousePressed(app, event):
                 app.error = None
             else:
                 app.error = 'overlap'
-    print(app.currently_selected)
 
 def creator_keyPressed(app, event):
     if event.key == 'Escape':
@@ -78,8 +77,7 @@ def creator_keyPressed(app, event):
     if event.key == 's':
         app.level.saveLevel()
     if event.key == 'BackSpace':
-        print(type(app.currently_selected))
-        if type(app.currently_selected) == int or type(app.currently_selected == float):
+        if type(app.currently_selected) == int or type(app.currently_selected) == float:
             app.level.removeNote(app.currently_selected)
             app.currently_selected = None
 
