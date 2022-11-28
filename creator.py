@@ -2,7 +2,6 @@ from note import Note, Roll
 from level import Level
 from math import floor
 import pygame
-import time
 
 def creator_mousePressed(app, event):
     if app.currently_selected == 'playButton':

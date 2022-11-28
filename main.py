@@ -2,6 +2,7 @@ from cmu_112_graphics import *
 from creator import *
 from player import *
 import creatorUI
+import playerUI
 import pygame
 from note import Note, Roll
 from level import Level
@@ -10,7 +11,7 @@ from level import Level
 def appStarted(app):
     app.width = app.width
     app.height = app.height
-    app.mode = 'creator'
+    app.mode = 'player'
     app.level = Level('Yoru Ni Kakeru', dict(), 281, 130, 'yoru_ni_kakeru.mp3') # CITE
     app.level.loadNotes()
     if app.mode == 'creator':
