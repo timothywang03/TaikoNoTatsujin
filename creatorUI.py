@@ -7,77 +7,76 @@ class UI:
     def __init__(self, app):
 
         # NOTE CONSTANTS    # CITE IMAGES
-        app.don = app.loadImage('image_folder/don.png')
-        app.kat = app.loadImage('image_folder/kat.png')
-        app.roll = app.loadImage('image_folder/roll.png')
-        app.rollEnd = app.loadImage('image_folder/rollEnd.png')
-        app.rollLine = app.loadImage('image_folder/rollLine.png')
+        app.don = app.loadImage('image_folder/notes/don.png')
+        app.kat = app.loadImage('image_folder/notes/kat.png')
+        app.roll = app.loadImage('image_folder/notes/roll.png')
+        app.rollEnd = app.loadImage('image_folder/notes/rollEnd.png')
+        app.rollLine = app.loadImage('image_folder/notes/rollLine.png')
         app.noteTypes = {'kat', 'don', 'Dkat', 'Ddon', 'roll', 'rollEnd'}
-        app.Ddon = app.loadImage('image_folder/Ddon.png')
-        app.Dkat = app.loadImage('image_folder/Dkat.png')
+        app.Ddon = app.loadImage('image_folder/notes/Ddon.png')
+        app.Dkat = app.loadImage('image_folder/notes/Dkat.png')
         app.hover = None
 
         # FRAME VISUALS
-        app.scrollBar = ImageTk.PhotoImage(app.loadImage('image_folder/scrollBar.png'))
-        app.scrollMarker = ImageTk.PhotoImage(app.loadImage('image_folder/scrollMarker.png'))
+        app.scrollBar = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/scrollBar.png'))
+        app.scrollMarker = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/scrollMarker.png'))
         app.scrollx = 0   # the default level start position
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
         app.pixelsPerBeat = 90
         app.reached_middle = False
         app.currently_selected = None
-        app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/beatLine.png'))
+        app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/beatLine.png'))
 
         # MUSIC
         app.level.initiateSong(app)
-        app.indicator = ImageTk.PhotoImage(app.loadImage('image_folder/playbackIndicator.png'))
+        app.indicator = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playbackIndicator.png'))
         app.indicatorx = 0
         app.timerDelay = 10
         app.musicStarted = False
 
         # ERROR MESSAGES
-        app.directions = ImageTk.PhotoImage(app.loadImage('image_folder/directions.png'))
-        app.overlapError = ImageTk.PhotoImage(app.loadImage('image_folder/overlapError.png'))
-        app.playbackError = ImageTk.PhotoImage(app.loadImage('image_folder/playbackError.png'))
+        app.directions = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/directions.png'))
+        app.overlapError = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/overlapError.png'))
+        app.playbackError = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playbackError.png'))
         app.error = None
 
         # MISCELLANIOUS
-        app.noteBar = ImageTk.PhotoImage(app.loadImage('image_folder/noteBar.png'))
-        app.noteDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/noteDecorum.png'))
-        app.background = app.loadImage('image_folder/creatorBackground.png')
+        app.noteBar = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/noteBar.png'))
+        app.background = app.loadImage('image_folder/creatorUI/creatorBackground.png')
         app.background = ImageTk.PhotoImage(app.scaleImage(app.background, 2.5/2))
-        app.errorBox = ImageTk.PhotoImage(app.loadImage('image_folder/errorBox.png'))
+        app.errorBox = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/errorBox.png'))
         app.errorMessage = ''
-        app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/playButton.png'))
+        app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playButton.png'))
 
 
     def drawTimeline(self, app, canvas):
-        canvas.create_rectangle(0, 250, 1280, 400, fill='#202020')
+        canvas.create_rectangle(0, 250, 1280, 400, fill='#383838')
 
     def drawNoteSelection(self, app, canvas):
         canvas.create_image(183, 615, anchor=NW, image=app.noteBar)
-        canvas.create_image(243, 658, anchor=NW,image=ImageTk.PhotoImage(app.scaleImage(app.don, 80/44)))
-        canvas.create_image(401, 658, anchor=NW,image=ImageTk.PhotoImage(app.scaleImage(app.kat, 80/44)))
-        canvas.create_image(559, 658, anchor=NW,image=ImageTk.PhotoImage(app.scaleImage(app.roll, 80/44)))
-        canvas.create_image(717, 637, anchor=NW,image=ImageTk.PhotoImage(app.scaleImage(app.Ddon, 121/66)))
-        canvas.create_image(916, 637, anchor=NW,image=ImageTk.PhotoImage(app.scaleImage(app.Dkat, 121/66)))
+        canvas.create_image(243, 658, anchor=NW,image=ImageTk.PhotoImage(app.don))
+        canvas.create_image(401, 658, anchor=NW,image=ImageTk.PhotoImage(app.kat))
+        canvas.create_image(559, 658, anchor=NW,image=ImageTk.PhotoImage(app.roll))
+        canvas.create_image(717, 637, anchor=NW,image=ImageTk.PhotoImage(app.Ddon))
+        canvas.create_image(916, 637, anchor=NW,image=ImageTk.PhotoImage(app.Dkat))
 
     def drawNote(self, app, canvas, note, x, end=0):
         if note == 'don':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.don, 80/44)))
+            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.don))
         if note == 'kat':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.kat, 80/44)))
+            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.kat))
         if note == 'Ddon':
-            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Ddon, 80/44)))
+            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.Ddon))
         if note == 'Dkat':
-            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Dkat, 80/44)))
+            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.Dkat))
         if note == 'roll':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.roll, 80/44)))
+            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.roll))
 
         if note == 'rollEnd':
-            for y in range(int(x + 45), int(end - 90), 10):
-                canvas.create_image(y, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollLine, 80/44)))
-            if end - 44 > x + 44: canvas.create_image(end - 44, 285, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 80/44)))
+            for y in range(int(x + 44), int(end - 90), 10):
+                canvas.create_image(y, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollLine))
+            if end - 80 > x + 80: canvas.create_image(end - 80, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollEnd))
             self.drawNote(app, canvas, 'roll', x)
 
     def drawScrollBar(self, app, canvas):
