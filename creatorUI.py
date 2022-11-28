@@ -74,7 +74,7 @@ class UI:
             canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.roll))
 
         if note == 'rollEnd':
-            for y in range(int(x + 44), int(end - 90), 10):
+            for y in range(int(x + 40), int(end - 90), 10):
                 canvas.create_image(y, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollLine))
             if end - 80 > x + 80: canvas.create_image(end - 80, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollEnd))
             self.drawNote(app, canvas, 'roll', x)

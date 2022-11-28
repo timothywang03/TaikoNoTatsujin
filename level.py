@@ -54,6 +54,7 @@ class Level:
         f.write(f'BPM: {self.bpm}\n')
         f.write(f'Song: {self.song}\n')
         f.write(f'Best Score: {self.best_score}\n')
+        f.write(f'Difficulty: {self.difficulty}\n')
         for k, v in self.notes.items():
             f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
 
@@ -62,7 +63,7 @@ class Level:
             f = open(f'{self.name}.txt', 'r')
         except:
             return -1
-        for line in f.readlines()[4:]:
+        for line in f.readlines()[5:]:
             line = line.split()
             self.notes[float(line[1])] = Note(line[0], float(line[1]), float(line[2]))
 
