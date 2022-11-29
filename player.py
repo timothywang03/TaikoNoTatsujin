@@ -17,9 +17,13 @@ def player_keyPressed(app, event):
     app.frameLeft += 20
 
 def player_timerFired(app):
+    if app.started is False:
+        app.started = True
+        pygame.mixer.music.play()
+
     app.keysPressed = set()
     app.cloudsx -= 5
-    app.topWallpaperx -= 10
+    app.topWallpaperx -= 2
     if app.cloudsx <= -1376:
         app.cloudsx += 492
     if app.topWallpaperx <= -1280:
@@ -52,3 +56,4 @@ def player_redrawAll(app, canvas):
         if x == 'katRight': app.ui.drawKatRight(app, canvas)
 
     app.ui.drawDifficulty(app, canvas)
+    app.ui.drawScore(app, canvas)

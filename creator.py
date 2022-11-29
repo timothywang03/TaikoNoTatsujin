@@ -2,6 +2,7 @@ from note import Note, Roll
 from level import Level
 from math import floor
 import pygame
+import time
 
 def creator_mousePressed(app, event):
     if app.currently_selected == 'playButton':
@@ -34,31 +35,37 @@ def creator_mousePressed(app, event):
         if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
             app.currently_selected = 'playButton'
             app.indicatorx = app.frameLeft
-            pygame.mixer.music.play(0, 281 * app.frameLeft / (app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat))
+            # since only allows integer values, the starting point of the music will be quite inaccurate
+            pygame.mixer.music.play(int(app.frameLeft/app.levelLengthPix * app.level.getLength()))
 
     if app.currently_selected in app.noteTypes:
         if app.currently_selected == 'rollEnd':
             app.level.getNotes()[app.rollStart].addEnd(event.x + app.frameLeft)
+            app.level.getNotes()[app.rollStart].translateTime(app)
             app.currently_selected = None
             app.hover = None
 
         elif app.hover is not None:
             if app.ui.checkOverlap(app, app.hover + app.frameLeft) is False:
                 if app.currently_selected == 'don':
-                    app.level.addNote(event.x + app.frameLeft, \
-                    Note('don', event.x + app.frameLeft, event.x + app.frameLeft + 80))
+                    add = Note('don', event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    app.level.addNote(event.x + app.frameLeft, add)
+                    add.translateTime(app)
                 elif app.currently_selected == 'kat':
-                    app.level.addNote(event.x + app.frameLeft, \
-                    Note('kat', event.x + app.frameLeft, event.x + app.frameLeft + 80))
+                    add = Note('kat', event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    app.level.addNote(event.x + app.frameLeft, add)
+                    add.translateTime(app)
                 elif app.currently_selected == 'Ddon':
-                    app.level.addNote(event.x + app.frameLeft, \
-                    Note('Ddon', event.x + app.frameLeft, event.x + app.frameLeft + 121))
+                    add = Note('Ddon', event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    app.level.addNote(event.x + app.frameLeft, add)
+                    add.translateTime(app)
                 elif app.currently_selected == 'Dkat':
-                    app.level.addNote(event.x + app.frameLeft, \
-                    Note('Dkat', event.x + app.frameLeft, event.x + app.frameLeft + 121))
+                    add = Note('Dkat', event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    app.level.addNote(event.x + app.frameLeft, add)
+                    add.translateTime(app)
                 elif app.currently_selected == 'roll':
-                    app.level.addNote(event.x + app.frameLeft, \
-                    Note('roll', event.x + app.frameLeft))
+                    add = Note('roll', event.x + app.frameLeft)
+                    app.level.addNote(event.x + app.frameLeft, add)
                     app.currently_selected = 'rollEnd'
                     app.rollStart = event.x + app.frameLeft
 
@@ -95,7 +102,6 @@ def creator_mouseDragged(app, event):
             app.scrollx = 0
         elif event.x > 1087:
             app.scrollx = 897
-
     app.ui.calcFrame(app)
 
 def creator_timerFired(app):

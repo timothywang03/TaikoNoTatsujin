@@ -5,8 +5,7 @@ import time
 
 class UI:
     def __init__(self, app):
-
-        # NOTE CONSTANTS    # CITE IMAGES
+        # ALL IMAGES ARE FROM WEBSITE https://www.spriters-resource.com/nintendo_switch/taikonotatsujindrumnfun/
         app.don = app.loadImage('image_folder/notes/don.png')
         app.kat = app.loadImage('image_folder/notes/kat.png')
         app.roll = app.loadImage('image_folder/notes/roll.png')
@@ -23,7 +22,8 @@ class UI:
         app.scrollx = 0   # the default level start position
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
-        app.pixelsPerBeat = 90
+        app.pixelsPerBeat = app.level.getBpm() * 5
+        app.levelLengthPix = app.level.getLength() / 60 * app.level.getBpm() * app.pixelsPerBeat
         app.reached_middle = False
         app.currently_selected = None
         app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/beatLine.png'))
@@ -48,7 +48,6 @@ class UI:
         app.errorBox = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/errorBox.png'))
         app.errorMessage = ''
         app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playButton.png'))
-
 
     def drawTimeline(self, app, canvas):
         canvas.create_rectangle(0, 250, 1280, 400, fill='#383838')
@@ -89,7 +88,8 @@ class UI:
         return app.scrollx
 
     def calcFrame(self, app):
-        app.frameLeft = app.scrollx / 900 * app.level.getBpm() * app.level.getLength() / 60 * app.pixelsPerBeat
+        app.frameLeft = app.scrollx / 900 * app.levelLengthPix
+        print(app.frameLeft)
         app.frameRight = app.frameLeft + 1280
 
     def checkOverlap(self, app, x):
@@ -100,15 +100,25 @@ class UI:
         return False
 
     def playback(self, app):
-        if app.indicatorx >= app.frameLeft + 640:
+        # the accuracy of the playback is ENTIRELY DEPENDENT on the processing speed
+        # of your machine. After testing this with multiple resolutions, pygame's
+        # music either can take very long to process or very short time, and
+        # the indicator will reflect that
+        if app.indicatorx >= 640 + app.frameLeft:
             app.reached_middle = True
 
-        if app.reached_middle is True:
-            app.scrollx += (1/600) / (app.level.getLength() / 60) * 900
-            self.calcFrame(app)
-        app.indicatorx += app.level.getBpm() / 600 * app.pixelsPerBeat
+        if app.reached_middle is False:
+            # move indicator to middle
+            app.indicatorx += app.levelLengthPix / app.level.getLength() / 75
+        else:
+            # if indicator is in the middle of the frame
+            app.frameLeft += app.levelLengthPix / app.level.getLength() / 75
+            app.frameRight = app.frameLeft + 1280
+            app.indicatorx = 640 + app.frameLeft
+            app.scrollx = app.frameLeft / app.levelLengthPix * 900
+            print(app.frameLeft / app.levelLengthPix)
 
-        if app.scrollx >= 897:
+        if app.frameRight >= app.levelLengthPix:
             app.currently_selected = None
 
     def drawErrorBox(self, app, canvas):
@@ -129,8 +139,8 @@ class UI:
         canvas.create_image(app.indicatorx - app.frameLeft, 246, anchor=NW, image=app.indicator)
 
     def drawBeatlines(self, app, canvas):
-        for x in range(0, int(app.level.getBpm() * app.level.getLength() / 60) * app.pixelsPerBeat, app.pixelsPerBeat * 4):
-            canvas.create_image(x - app.frameLeft, 250, anchor=NW, image=app.beatLine)
+        for x in range(0, int(app.level.getLength() / 60 * app.level.getBpm())):
+            canvas.create_image(x * app.pixelsPerBeat - app.frameLeft, 246, anchor=NW, image=app.beatLine)
 
     def setBackground(self, app, file):
         app.background = app.loadImage(file)

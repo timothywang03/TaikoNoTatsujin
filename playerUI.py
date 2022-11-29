@@ -16,8 +16,8 @@ class UI:
 
         # MUSIC
         pygame.mixer.init()
-        app.song = pygame.mixer.music.load('music_folder/charlies_here.mp3')
         app.timerDelay = 10
+        app.started = False
 
         # KEY PRESS
         app.keysPressed = set()
@@ -27,18 +27,20 @@ class UI:
         app.frameRight = app.frameLeft + 1280
         app.pixelsPerBeat = 90
 
-        # COMBO VARIABLES
-        app.combo = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/combo.png'))
-        app.one = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/1.png'))
-        app.two = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/2.png'))
-        app.three = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/3.png'))
-        app.four = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/4.png'))
-        app.five = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/5.png'))
-        app.six = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/6.png'))
-        app.seven = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/7.png'))
-        app.eight = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/8.png'))
-        app.nine = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/9.png'))
-        app.zero = ImageTk.PhotoImage(app.loadImage('image_folder/numbers/0.png'))
+        # SCORING VARIABLES
+        app.score = 0
+        app.streak = 0
+        app.combo = app.loadImage('image_folder/playerUI/combo.png')
+        app.one = app.loadImage('image_folder/numbers/1.png')
+        app.two = app.loadImage('image_folder/numbers/2.png')
+        app.three = app.loadImage('image_folder/numbers/3.png')
+        app.four = app.loadImage('image_folder/numbers/4.png')
+        app.five = app.loadImage('image_folder/numbers/5.png')
+        app.six = app.loadImage('image_folder/numbers/6.png')
+        app.seven = app.loadImage('image_folder/numbers/7.png')
+        app.eight = app.loadImage('image_folder/numbers/8.png')
+        app.nine = app.loadImage('image_folder/numbers/9.png')
+        app.zero = app.loadImage('image_folder/numbers/0.png')
         app.numbers = {1: app.one, 2: app.two, 3: app.three, 4: app.four, \
         5: app.five, 6: app.six, 7: app.seven, 8: app.eight, 9: app.nine, \
         0: app.zero}
@@ -64,6 +66,31 @@ class UI:
         app.difficultyEasy = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/easy.png'))
         app.difficultyNormal = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/normal.png'))
         app.difficultyHard = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/hard.png'))
+
+    def scoreAdd(self, app, note):
+        if note.getType() == 'roll':
+            app.score += 100 * note.getRollScore()
+        else:
+            if app.streak < 10:
+                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                    app.score += 1720
+                if note.getType() == 'don' or note.getType() == 'kat':
+                    app.score += 860
+            elif app.streak >= 10:
+                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                    app.score += 2160
+                if note.getType() == 'don' or note.getType() == 'kat':
+                    app.score += 1080
+            elif app.streak >= 30:
+                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                    app.score += 2712
+                if note.getType() == 'don' or note.getType() == 'kat':
+                    app.score += 1300
+            else:
+                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                    app.score += 3480
+                if note.getType() == 'don' or note.getType() == 'kat':
+                    app.score += 1740
 
     def drawNote(self, app, canvas, note, x, end=0):
         if note == 'don':
@@ -121,6 +148,17 @@ class UI:
     def drawScoreBar(self, app, canvas):
         canvas.create_image(25, 384, anchor=NW, image=app.scoreBar)
 
+    def drawScore(self, app, canvas):
+        if app.score >= 10000:
+            canvas.create_image(62, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 10000 % 10], 35/57)))
+        if app.score >= 1000:
+            canvas.create_image(89, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 1000 % 10], 35/57)))
+        if app.score >= 100:
+            canvas.create_image(116, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 100 % 10], 35/57)))
+        if app.score >= 10:
+            canvas.create_image(144, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 10 % 10], 35/57)))
+        canvas.create_image(170, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score % 10], 35/57)))
+
     def drawCombo(self, app, canvas, num):
         if num > 9:
             canvas.create_image(203, 303, anchor=NW, image=app.numbers[num//10%10])
@@ -128,7 +166,6 @@ class UI:
         canvas.create_image(225, 360, anchor=NW, image=app.combo)
 
     def drawDifficulty(self, app, canvas):
-        print(app.level.difficulty)
         if app.level.getDifficulty() == 'easy':
             canvas.create_image(24, 286, anchor=NW, image=app.difficultyEasy)
         elif app.level.getDifficulty() == 'normal':
