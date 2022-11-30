@@ -48,23 +48,19 @@ def creator_mousePressed(app, event):
         elif app.hover is not None:
             if app.ui.checkOverlap(app, app.hover + app.frameLeft) is False:
                 if app.currently_selected == 'don':
-                    add = Note('don', event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    add = Note('don', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 80)
                     app.level.addNote(event.x + app.frameLeft, add)
-                    add.translateTime(app)
                 elif app.currently_selected == 'kat':
-                    add = Note('kat', event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    add = Note('kat', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 80)
                     app.level.addNote(event.x + app.frameLeft, add)
-                    add.translateTime(app)
                 elif app.currently_selected == 'Ddon':
-                    add = Note('Ddon', event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    add = Note('Ddon', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 121)
                     app.level.addNote(event.x + app.frameLeft, add)
-                    add.translateTime(app)
                 elif app.currently_selected == 'Dkat':
-                    add = Note('Dkat', event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    add = Note('Dkat', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 121)
                     app.level.addNote(event.x + app.frameLeft, add)
-                    add.translateTime(app)
                 elif app.currently_selected == 'roll':
-                    add = Note('roll', event.x + app.frameLeft)
+                    add = Note('roll', app.level, event.x + app.frameLeft)
                     app.level.addNote(event.x + app.frameLeft, add)
                     app.currently_selected = 'rollEnd'
                     app.rollStart = event.x + app.frameLeft

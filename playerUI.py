@@ -5,6 +5,7 @@ import pygame
 class UI:
     def __init__(self, app):
         # NOTE CONSTANTS
+
         app.don = app.loadImage('image_folder/notes/don.png')
         app.kat = app.loadImage('image_folder/notes/kat.png')
         app.roll = app.loadImage('image_folder/notes/roll.png')
@@ -32,7 +33,7 @@ class UI:
         app.noteQueue = list()
         for timestamp in sorted(app.level.getNotes()):
             note = app.level.getNotes()[timestamp]
-                app.noteQueue.append(note)
+            app.noteQueue.append(note)
         app.currentNote = None
 
         # SCORING VARIABLES

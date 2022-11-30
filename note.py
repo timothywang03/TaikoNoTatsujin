@@ -1,17 +1,19 @@
 from cmu_112_graphics import *
 
 class Note:
-    def __init__(self, type, noteStart, noteEnd=0):
+    def __init__(self, type, level, noteStart, noteEnd=0):
         self.type = type
+        self.level = level
+        self.levelLengthPix = level.getLength() ** 2 / 60 * level.getBpm() * 5
         self.noteStart = noteStart  # time that the note will start
-        self.noteStartTime = None
         if noteEnd == 0:
             self.noteEnd = noteStart
         else:
             self.noteEnd = noteEnd      # time that the note wll end
-        self.noteEndTime = None
         self.noteMid = (self.noteStart + self.noteEnd) / 2
-        self.noteMidTime = None
+        self.noteStartTime = self.noteStart / self.levelLengthPix * level.getLength()
+        self.noteMidTime = self.noteMid / self.levelLengthPix * level.getLength()
+        self.noteEndTime = self.noteEnd / self.levelLengthPix * level.getLength()
         self.hit = False
         self.good = 10 # ms
         self.ok = 30 # ms
@@ -34,16 +36,17 @@ class Note:
     def getHit(self):
         return self.hit
 
-    def translateTime(self, app):
-        self.noteStartTime = self.noteStart / app.levelLengthPix * app.level.getLength()
-        self.noteMidTime = self.noteMid / app.levelLengthPix * app.level.getLength()
-        self.noteEndTime = self.noteEnd / app.levelLengthPix * app.level.getLength()
-
     def getType(self):
         return self.type
 
     def getNoteStart(self):
         return self.noteStart
+
+    def getNoteStartTime(self):
+        return self.noteStartTime
+
+    def getNoteEndTime(self):
+        return self.noteEndTime
 
     def getKeys(self):
         return self.keys

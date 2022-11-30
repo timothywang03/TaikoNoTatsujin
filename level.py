@@ -58,14 +58,14 @@ class Level:
         for k, v in self.notes.items():
             f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
 
-    def loadNotes(self):
+    def loadNotes(level):
         try:
-            f = open(f'{self.name}.txt', 'r')
+            f = open(f'{level.name}.txt', 'r')
         except:
             return -1
         for line in f.readlines()[5:]:
             line = line.split()
-            self.notes[float(line[1])] = Note(line[0], float(line[1]), float(line[2]))
+            level.notes[float(line[1])] = Note(line[0], level, float(line[1]), float(line[2]))
 
     def __str__(self):
         return f'{self.name}, {len(self.notes)}'

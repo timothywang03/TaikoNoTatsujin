@@ -19,27 +19,29 @@ def player_keyPressed(app, event):
     app.frameLeft += 20
 
 def player_timerFired(app):
+    print(app.currentNote)
     if app.started is False:
         app.started = True
         pygame.mixer.music.play()
 
-    if app.time > app.noteQueue[0]:
+    if app.time > app.noteQueue[0].getEnd():
         app.noteQueue.pop(0)
         app.currentNote = None
 
-    if app.noteQueue[0].getNoteStart() <= app.time <= app.noteQueue[0]:
+    if app.noteQueue[0].getNoteStartTime() <= app.time <= app.noteQueue[0].getNoteEndTime():
         app.currentNote = app.noteQueue[0]
 
-    if app.currentNote.getType() == 'roll':
-        app.rollCounter = 0
-        app.rollStart = app.time
+    if app.currentNote is not None:
+        if app.currentNote.getType() == 'roll':
+            app.rollCounter = 0
+            app.rollStart = app.time
 
-    if len(app.keysPressed) is not None:
-        app.currentNote.hitNote(app.time)
-        if app.keysPressed in app.currentNote.getKeys():
-            app.currentNote.hitScore(app)
-        app.currentNote = None
-        app.noteQueue.pop(0)
+        if len(app.keysPressed) is not None:
+            app.currentNote.hitNote(app.time)
+            if app.keysPressed in app.currentNote.getKeys():
+                app.currentNote.hitScore(app)
+            app.currentNote = None
+            app.justHit = app.noteQueue.pop(0)
 
     app.keysPressed = set()
 

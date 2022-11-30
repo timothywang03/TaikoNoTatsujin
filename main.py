@@ -16,6 +16,7 @@ def appStarted(app):
     app.mode = 'player'
     app.level = Level('Yoru Ni Kakeru', dict(), 34, 130, 'yoru_ni_kakeru.mp3', 'normal') # CITE
     app.level.loadNotes()
+    print(app.level.getNotes())
     if app.mode == 'creator':
         app.ui = creatorUI.UI(app)
     if app.mode == 'player':
