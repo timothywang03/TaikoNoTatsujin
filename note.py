@@ -17,6 +17,17 @@ class Note:
         self.ok = 30 # ms
         self.bad = 60 # ms
 
+        if self.type == 'don':
+            self.keys = [{'f'}, {'j'}]
+        if self.type == 'kat':
+            self.keys = [{'d'}, {'k'}]
+        if self.type == 'Ddon':
+            self.keys = [{'f', 'j'}]
+        if self.type == 'Dkat':
+            self.keys = [{'d', 'k'}]
+        if self.type == 'roll':
+            self.keys = [{'f'}, {'j'}]
+
     def hitNote(self, time):
         self.hit = time
 
@@ -33,6 +44,9 @@ class Note:
 
     def getNoteStart(self):
         return self.noteStart
+
+    def getKeys(self):
+        return self.keys
 
     def getEnd(self):
         return self.noteEnd

@@ -8,8 +8,10 @@ import time
 def player_keyPressed(app, event):
     if event.key == 'f':
         app.keysPressed.add('donLeft')
+        if app.rollStart is not None: app.rollCounter += 1
     if event.key == 'j':
         app.keysPressed.add('donRight')
+        if app.rollStart is not None: app.rollCounter += 1
     if event.key == 'd':
         app.keysPressed.add('katLeft')
     if event.key == 'k':
@@ -21,7 +23,26 @@ def player_timerFired(app):
         app.started = True
         pygame.mixer.music.play()
 
+    if app.time > app.noteQueue[0]:
+        app.noteQueue.pop(0)
+        app.currentNote = None
+
+    if app.noteQueue[0].getNoteStart() <= app.time <= app.noteQueue[0]:
+        app.currentNote = app.noteQueue[0]
+
+    if app.currentNote.getType() == 'roll':
+        app.rollCounter = 0
+        app.rollStart = app.time
+
+    if len(app.keysPressed) is not None:
+        app.currentNote.hitNote(app.time)
+        if app.keysPressed in app.currentNote.getKeys():
+            app.currentNote.hitScore(app)
+        app.currentNote = None
+        app.noteQueue.pop(0)
+
     app.keysPressed = set()
+
     app.cloudsx -= 5
     app.topWallpaperx -= 2
     if app.cloudsx <= -1376:
@@ -29,6 +50,7 @@ def player_timerFired(app):
     if app.topWallpaperx <= -1280:
         app.topWallpaperx = -50
     app.frameLeft += 20
+    app.time += 10
 
 def player_redrawAll(app, canvas):
     app.ui.drawBackground(app, canvas)

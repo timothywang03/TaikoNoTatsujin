@@ -19,13 +19,21 @@ class UI:
         app.timerDelay = 10
         app.started = False
 
-        # KEY PRESS
-        app.keysPressed = set()
-
         # FRAME VARIABLES
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
         app.pixelsPerBeat = 90
+        app.time = 0
+
+        # GAMEPLAY VARIABLES
+        app.keysPressed = set()
+        app.rollStart = None
+        app.rollCounter = 0
+        app.noteQueue = list()
+        for timestamp in sorted(app.level.getNotes()):
+            note = app.level.getNotes()[timestamp]
+                app.noteQueue.append(note)
+        app.currentNote = None
 
         # SCORING VARIABLES
         app.score = 0
@@ -66,31 +74,6 @@ class UI:
         app.difficultyEasy = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/easy.png'))
         app.difficultyNormal = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/normal.png'))
         app.difficultyHard = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/hard.png'))
-
-    def scoreAdd(self, app, note):
-        if note.getType() == 'roll':
-            app.score += 100 * note.getRollScore()
-        else:
-            if app.streak < 10:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
-                    app.score += 1720
-                if note.getType() == 'don' or note.getType() == 'kat':
-                    app.score += 860
-            elif app.streak >= 10:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
-                    app.score += 2160
-                if note.getType() == 'don' or note.getType() == 'kat':
-                    app.score += 1080
-            elif app.streak >= 30:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
-                    app.score += 2712
-                if note.getType() == 'don' or note.getType() == 'kat':
-                    app.score += 1300
-            else:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
-                    app.score += 3480
-                if note.getType() == 'don' or note.getType() == 'kat':
-                    app.score += 1740
 
     def drawNote(self, app, canvas, note, x, end=0):
         if note == 'don':
