@@ -7,52 +7,60 @@ import time
 
 def player_keyPressed(app, event):
     if event.key == 'f':
-        app.keysPressed.add('donLeft')
-        if app.rollStart is not None: app.rollCounter += 1
+        app.keysPressed.add('f')
+        if app.currentNote is not None and app.currentNote.getType() == 'roll': app.rollCounter += 1
     if event.key == 'j':
-        app.keysPressed.add('donRight')
-        if app.rollStart is not None: app.rollCounter += 1
+        app.keysPressed.add('j')
+        if app.currentNote is not None and app.currentNote.getType() == 'roll': app.rollCounter += 1
     if event.key == 'd':
-        app.keysPressed.add('katLeft')
+        app.keysPressed.add('d')
     if event.key == 'k':
-        app.keysPressed.add('katRight')
-    app.frameLeft += 20
+        app.keysPressed.add('k')
+    app.frameLeft += 10
 
 def player_timerFired(app):
-    print(app.currentNote)
     if app.started is False:
         app.started = True
         pygame.mixer.music.play()
 
-    if app.time > app.noteQueue[0].getEnd():
-        app.noteQueue.pop(0)
-        app.currentNote = None
-
-    if app.noteQueue[0].getNoteStartTime() <= app.time <= app.noteQueue[0].getNoteEndTime():
-        app.currentNote = app.noteQueue[0]
-
-    if app.currentNote is not None:
-        if app.currentNote.getType() == 'roll':
-            app.rollCounter = 0
-            app.rollStart = app.time
-
-        if len(app.keysPressed) is not None:
-            app.currentNote.hitNote(app.time)
-            if app.keysPressed in app.currentNote.getKeys():
-                app.currentNote.hitScore(app)
+    if len(app.noteQueue) > 0:
+        if app.indicatorx > app.noteQueue[0].getEnd() - app.frameLeft:
+            app.noteQueue.pop(0)
             app.currentNote = None
-            app.justHit = app.noteQueue.pop(0)
+            app.rollStarted = False
 
-    app.keysPressed = set()
+    if len(app.noteQueue) > 0:
+        if app.noteQueue[0].getNoteStart() - app.frameLeft <= app.indicatorx <= app.noteQueue[0].getEnd() - app.frameLeft:
+            app.currentNote = app.noteQueue[0]
+            if app.currentNote.getType() == 'roll' and app.rollStarted is False:
+                app.rollStarted = True
+                app.rollCounter = 0
 
-    app.cloudsx -= 5
-    app.topWallpaperx -= 2
-    if app.cloudsx <= -1376:
-        app.cloudsx += 492
-    if app.topWallpaperx <= -1280:
-        app.topWallpaperx = -50
-    app.frameLeft += 20
-    app.time += 10
+        if app.currentNote is not None:
+            if len(app.keysPressed) != 0:
+                if app.currentNote.getType() != 'roll':
+                    app.currentNote.hitNote(app.indicatorx)
+                    if app.keysPressed in app.currentNote.getKeys():
+                        hit = app.currentNote.hitScore(app)
+                        app.score += hit
+                        app.streak += 1
+                    else:
+                        app.streak = 0
+                    app.currentNote = None
+                    app.justHit = app.noteQueue.pop(0)
+                else:
+                    app.score += app.currentNote.hitScore(app)
+
+        app.keysPressed = set()
+
+        app.cloudsx -= 5
+        app.topWallpaperx -= 2
+        if app.cloudsx <= -1376:
+            app.cloudsx += 492
+        if app.topWallpaperx <= -1280:
+            app.topWallpaperx = -50
+        app.frameLeft += 20
+        app.time += 10
 
 def player_redrawAll(app, canvas):
     app.ui.drawBackground(app, canvas)
@@ -81,3 +89,6 @@ def player_redrawAll(app, canvas):
 
     app.ui.drawDifficulty(app, canvas)
     app.ui.drawScore(app, canvas)
+    if app.streak >= 10: app.ui.drawCombo(app, canvas)
+    if app.currentNote is not None and app.currentNote.getType() == 'roll':
+        app.ui.drawRollFan(app, canvas)

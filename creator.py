@@ -5,6 +5,31 @@ import pygame
 import time
 
 def creator_mousePressed(app, event):
+    if app.saveLevel is True:
+        if 611 <= event.x <= 1005 and 145 <= event.y <= 226:
+            levelName = app.getUserInput('')
+            app.level.setName(levelName)
+        if 704 <= event.x <= 971 and 243 <= event.y <= 343:
+            bpm = app.getUserInput('')
+            try:
+                bpm = int(bpm)
+                app.level.setBpm(bpm)
+            except:
+                bpm = None
+        if 530 <= event.x <= 642 and 360 <= event.y <= 472:
+            difficulty = 'easy'
+            app.level.setDifficulty(difficulty)
+        if 737 <= event.x <= 849 and 360 <= event.y <= 472:
+            difficulty = 'normal'
+            app.level.setDifficulty(difficulty)
+        if 943 <= event.x <= 1055 and 360 <= event.y <= 472:
+            difficulty = 'hard'
+            app.level.setDifficulty(difficulty)
+        if 501 <= event.x <= 720 and 507 <= event.y <= 577:
+            if app.level.getName() is not None and app.level.getBpm() is not None and app.level.getDifficulty() is not None:
+                app.saveLevel = False
+                app.level.saveLevel()
+
     if app.currently_selected == 'playButton':
         if 1151 <= event.x <= 1231 and 14 <= event.y <= 94:
             app.currently_selected = None
@@ -77,7 +102,7 @@ def creator_keyPressed(app, event):
         app.currently_selected = None
         app.hover = None
     if event.key == 's':
-        app.level.saveLevel()
+        app.saveLevel = True
     if event.key == 'BackSpace':
         if type(app.currently_selected) == int or type(app.currently_selected) == float:
             app.level.removeNote(app.currently_selected)
@@ -132,3 +157,5 @@ def creator_redrawAll(app, canvas):
             app.ui.drawNote(app, canvas, app.currently_selected, app.rollStart, app.hover)
         else:
             app.ui.drawNote(app, canvas, app.currently_selected, app.hover)
+
+    if app.saveLevel is True: app.ui.drawSaveScreen(app, canvas, app.level.getName(), app.level.getBpm(), app.level.getDifficulty())

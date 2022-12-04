@@ -5,19 +5,21 @@ class Note:
         self.type = type
         self.level = level
         self.levelLengthPix = level.getLength() ** 2 / 60 * level.getBpm() * 5
-        self.noteStart = noteStart  # time that the note will start
+        self.noteStart = noteStart  # pixel that the note will start
         if noteEnd == 0:
             self.noteEnd = noteStart
         else:
-            self.noteEnd = noteEnd      # time that the note wll end
+            self.noteEnd = noteEnd      # pixel that the note wll end
         self.noteMid = (self.noteStart + self.noteEnd) / 2
-        self.noteStartTime = self.noteStart / self.levelLengthPix * level.getLength()
-        self.noteMidTime = self.noteMid / self.levelLengthPix * level.getLength()
-        self.noteEndTime = self.noteEnd / self.levelLengthPix * level.getLength()
         self.hit = False
-        self.good = 10 # ms
-        self.ok = 30 # ms
-        self.bad = 60 # ms
+        if self.type == 'don' or self.type == 'kat':
+            self.good = 10 # ms
+            self.ok = 15
+            self.bad = 20
+        else:
+            self.good = 10
+            self.ok = 20
+            self.bad = 30
 
         if self.type == 'don':
             self.keys = [{'f'}, {'j'}]
@@ -30,8 +32,8 @@ class Note:
         if self.type == 'roll':
             self.keys = [{'f'}, {'j'}]
 
-    def hitNote(self, time):
-        self.hit = time
+    def hitNote(self, position):
+        self.hit = position
 
     def getHit(self):
         return self.hit
@@ -42,12 +44,6 @@ class Note:
     def getNoteStart(self):
         return self.noteStart
 
-    def getNoteStartTime(self):
-        return self.noteStartTime
-
-    def getNoteEndTime(self):
-        return self.noteEndTime
-
     def getKeys(self):
         return self.keys
 
@@ -57,35 +53,36 @@ class Note:
     def hitScore(self, app):
         # return the score from hitting a note based on accuracy
         score = 0
-        if note.getType() == 'roll':
-            score += 100 * note.getRollScore()
+        if self.getType() == 'roll':
+            return 100
         else:
             if app.streak < 10:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
                     score += 1720
-                if note.getType() == 'don' or note.getType() == 'kat':
+                if self.getType() == 'don' or self.getType() == 'kat':
                     score += 860
             elif app.streak >= 10:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
                     score += 2160
-                if note.getType() == 'don' or note.getType() == 'kat':
+                if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1080
             elif app.streak >= 30:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
                     score += 2712
-                if note.getType() == 'don' or note.getType() == 'kat':
+                if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1300
             else:
-                if note.getType() == 'Ddon' or note.getType() == 'Dkat':
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
                     score += 3480
-                if note.getType() == 'don' or note.getType() == 'kat':
+                if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1740
         if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
             score *= 1
         elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
             score *= 0.5
         else:
-            score *= 0
+            score *= 0.1
+        return score
 
     def __repr__(self):
         return f'({self.type}, {self.noteStart}, {self.noteEnd})'

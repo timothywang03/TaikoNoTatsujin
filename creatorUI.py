@@ -49,6 +49,15 @@ class UI:
         app.errorMessage = ''
         app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playButton.png'))
 
+        # SAVE SCREEN
+        app.saveScreen = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/saveScreen.png'))
+        app.difficulties = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/difficulties.png'))
+        app.saveLevel = False
+        app.difficultySelected = None
+        app.levelNameSelected = None
+        app.beatsPerMinuteSelected = None
+        app.selection = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/selection.png'))
+
     def drawTimeline(self, app, canvas):
         canvas.create_rectangle(0, 250, 1280, 400, fill='#383838')
 
@@ -89,7 +98,6 @@ class UI:
 
     def calcFrame(self, app):
         app.frameLeft = app.scrollx / 900 * app.levelLengthPix
-        print(app.frameLeft)
         app.frameRight = app.frameLeft + 1280
 
     def checkOverlap(self, app, x):
@@ -116,7 +124,6 @@ class UI:
             app.frameRight = app.frameLeft + 1280
             app.indicatorx = 640 + app.frameLeft
             app.scrollx = app.frameLeft / app.levelLengthPix * 900
-            print(app.frameLeft / app.levelLengthPix)
 
         if app.frameRight >= app.levelLengthPix:
             app.currently_selected = None
@@ -131,6 +138,18 @@ class UI:
             canvas.create_image(368, 476, anchor=NW, image=app.playbackError)
         else:
             canvas.create_image(221, 450, anchor=NW, image=app.directions)
+
+    def drawSaveScreen(self, app, canvas, levelName, bpm, difficulty):
+        canvas.create_image(183, 94, anchor=NW, image=app.saveScreen)
+        canvas.create_text(681, 163, anchor=NW, text=levelName, font='Arial 36')
+        canvas.create_text(817, 271, anchor=NW, text=str(bpm), font='Arial 36')
+        canvas.create_image(543, 361, anchor=NW, image=app.difficulties)
+        if difficulty == 'easy':
+            canvas.create_image(535, 352, anchor=NW, image=app.selection)
+        elif difficulty == 'normal':
+            canvas.create_image(735, 352, anchor=NW, image=app.selection)
+        elif difficulty == 'hard':
+            canvas.create_image(935, 352, anchor=NW, image=app.selection)
 
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)

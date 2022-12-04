@@ -26,14 +26,23 @@ class Level:
     def getBpm(self):
         return self.bpm
 
+    def setBpm(self, bpm):
+        self.bpm = bpm
+
     def getBestScore(self):
         return self.best_score
 
     def getDifficulty(self):
         return self.difficulty
 
+    def setDifficulty(self, difficulty):
+        self.difficulty = difficulty
+
     def getName(self):
         return self.name
+
+    def setName(self, name):
+        self.name = name
 
     def getSong(self):
         return self.song
@@ -49,7 +58,7 @@ class Level:
         del self.notes[timestamp]
 
     def saveLevel(self):
-        f = open(f'{self.name}.txt', 'w')
+        f = open(f'{self.name}_{self.difficulty}.txt', 'w')
         f.write(f'Level Name: {self.name}\n')
         f.write(f'BPM: {self.bpm}\n')
         f.write(f'Song: {self.song}\n')
@@ -60,7 +69,7 @@ class Level:
 
     def loadNotes(level):
         try:
-            f = open(f'{level.name}.txt', 'r')
+            f = open(f'{level.name}_{level.difficulty}.txt', 'r')
         except:
             return -1
         for line in f.readlines()[5:]:

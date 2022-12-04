@@ -68,10 +68,11 @@ class UI:
         app.indicatorx = 363
         app.bottomBackground = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/bottomBackground.png'))
         app.bottomDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/bottomDecorum.png'))
-        app.timeline = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/timeline.png'))
-        app.clouds = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/clouds.png'))
-        app.cloudsx = 0
-        app.topWallpaper = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/topWallpaper.png'))
+        app.timeline1 = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/noteLane1.png'))
+        app.timeline2 = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/noteLane2.png'))
+        app.topWallpaper = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/wallpaper1.png'))
+        app.topDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/hexagon1.png'))
+        app.topDecorumx = 0
         app.topWallpaperx = 0
         app.scoreBar = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/scoreBar.png'))
         app.difficultyEasy = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/easy.png'))
