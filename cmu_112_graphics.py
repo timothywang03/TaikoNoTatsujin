@@ -685,7 +685,8 @@ class TopLevelApp(App):
         if isUsingMode:
             fn = app.mode + '_' + fn
         fn = app._fnPrefix + fn
-        if (fn in app._callersGlobals): app._callersGlobals[fn](*args)
+        if (fn in app._callersGlobals):
+            app._callersGlobals[fn](*args)
         if (isAppStopped and isUsingMode):
             # call the non-mode appStopped if there is one
             fn = app._fnPrefix + 'appStopped'

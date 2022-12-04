@@ -79,6 +79,7 @@ class UI:
         app.difficultyHard = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/hard.png'))
         app.rollFan = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/Fan.png'))
 
+
     def drawNote(self, app, canvas, note, x, end=0):
         if note == 'don':
             canvas.create_image(x, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.don, 68/80)))

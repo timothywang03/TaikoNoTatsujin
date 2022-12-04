@@ -47,7 +47,6 @@ def player_timerFired(app):
                     else:
                         app.streak = 0
                     app.currentNote = None
-                    app.justHit = app.noteQueue.pop(0)
                 else:
                     app.score += app.currentNote.hitScore(app)
 

@@ -90,6 +90,101 @@ class Note:
     def addEnd(self, timestamp):
         self.noteEnd = timestamp
 
+class PlayerOneNote(Note):
+    def __init__(self, type, level, noteStart, noteEnd=0):
+        super().__init__(type, level, noteStart, noteEnd)
+        if self.type == 'don':
+            self.keys = [{'s'}, {'d'}]
+        if self.type == 'kat':
+            self.keys = [{'a'}, {'f'}]
+        if self.type == 'Ddon':
+            self.keys = [{'s', 'd'}]
+        if self.type == 'Dkat':
+            self.keys = [{'a', 'f'}]
+        if self.type == 'roll':
+            self.keys = [{'s'}, {'d'}]
+
+    def hitScore(self, app):
+        # return the score from hitting a note based on accuracy
+        score = 0
+        if self.getType() == 'roll':
+            return 100
+        else:
+            if app.topStreak < 10:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 1720
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 860
+            elif app.topStreak >= 10:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 2160
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1080
+            elif app.topStreak >= 30:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 2712
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1300
+            else:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 3480
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1740
+        if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
+            score *= 1
+        elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
+            score *= 0.5
+        else:
+            score *= 0.1
+        return score
+
+class PlayerTwoNote(Note):
+    def __init__(self, type, level, noteStart, noteEnd=0):
+        super().__init__(type, level, noteStart, noteEnd)
+        if self.type == 'don':
+            self.keys = [{'j'}, {'k'}]
+        if self.type == 'kat':
+            self.keys = [{'h'}, {'l'}]
+        if self.type == 'Ddon':
+            self.keys = [{'j', 'k'}]
+        if self.type == 'Dkat':
+            self.keys = [{'h', 'l'}]
+        if self.type == 'roll':
+            self.keys = [{'j'}, {'k'}]
+
+    def hitScore(self, app):
+        # return the score from hitting a note based on accuracy
+        score = 0
+        if self.getType() == 'roll':
+            return 100
+        else:
+            if app.botStreak < 10:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 1720
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 860
+            elif app.botStreak >= 10:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 2160
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1080
+            elif app.botStreak >= 30:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 2712
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1300
+            else:
+                if self.getType() == 'Ddon' or self.getType() == 'Dkat':
+                    score += 3480
+                if self.getType() == 'don' or self.getType() == 'kat':
+                    score += 1740
+        if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
+            score *= 1
+        elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
+            score *= 0.5
+        else:
+            score *= 0.1
+        return score
 
 class Roll(Note):
     def __init__(self, noteStart, noteEnd):

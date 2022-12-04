@@ -1,11 +1,10 @@
 from cmu_112_graphics import *
-from note import Note, Roll
+from note import Note, Roll, PlayerOneNote, PlayerTwoNote
 import pygame
 
 class UI:
     def __init__(self, app):
         # NOTE CONSTANTS
-
         app.don = app.loadImage('image_folder/notes/don.png')
         app.kat = app.loadImage('image_folder/notes/kat.png')
         app.roll = app.loadImage('image_folder/notes/roll.png')
@@ -14,6 +13,11 @@ class UI:
         app.noteTypes = {'kat', 'don', 'Dkat', 'Ddon', 'roll', 'rollEnd'}
         app.Ddon = app.loadImage('image_folder/notes/Ddon.png')
         app.Dkat = app.loadImage('image_folder/notes/Dkat.png')
+        app.topNotes = dict()
+        app.botNotes = dict()
+        for k, note in app.level.getNotes().items():
+            app.topNotes[note.getNoteStart()] = PlayerOneNote(note.getType(), app.level, note.getNoteStart(), note.getEnd())
+            app.botNotes[note.getNoteStart()] = PlayerTwoNote(note.getType(), app.level, note.getNoteStart(), note.getEnd())
 
         # MUSIC
         pygame.mixer.init()
@@ -27,18 +31,27 @@ class UI:
         app.time = 0
 
         # GAMEPLAY VARIABLES
-        app.keysPressed = set()
+        app.topKeysPressed = set()
+        app.botKeysPressed = set()
         app.rollStart = None
-        app.rollCounter = 0
-        app.noteQueue = list()
-        for timestamp in sorted(app.level.getNotes()):
-            note = app.level.getNotes()[timestamp]
-            app.noteQueue.append(note)
-        app.currentNote = None
+        app.topRollCounter = 0
+        app.botRollCounter = 0
+        app.topNoteQueue = list()
+        app.botNoteQueue = list()
+        for timestamp in sorted(app.topNotes):
+            note = app.topNotes[timestamp]
+            app.topNoteQueue.append(note)
+        for timestamp in sorted(app.botNotes):
+            note = app.botNotes[timestamp]
+            app.botNoteQueue.append(note)
+        app.topCurrentNote = None
+        app.botCurrentNote = None
 
         # SCORING VARIABLES
-        app.score = 0
-        app.streak = 0
+        app.topScore = 0
+        app.botScore = 0
+        app.topStreak = 0
+        app.botStreak = 0
         app.rollStarted = False
         app.combo = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/combo.png'))
         app.one = app.loadImage('image_folder/numbers/1.png')
@@ -63,100 +76,155 @@ class UI:
         app.katRight = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/katRight.png'))
 
         # VISUAL VARIABLES
-        app.noteDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/noteDecorum.png'))
-        app.indicator = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/indicator.png'))
         app.indicatorx = 363
-        app.bottomBackground = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/bottomBackground.png'))
-        app.bottomDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/bottomDecorum.png'))
-        app.timeline1 = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/noteLane1.png'))
-        app.timeline2 = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/noteLane2.png'))
+        app.bottomBackground = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/wallpaper2.png'))
+        app.bottomDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/hexagon2.png'))
+        app.timeline = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/noteLane.png'))
+        app.noteDecorum1 = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/noteDecorum1.png'))
+        app.noteDecorum2 = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/noteDecorum2.png'))
         app.topWallpaper = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/wallpaper1.png'))
         app.topDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/hexagon1.png'))
         app.topDecorumx = 0
         app.topWallpaperx = 0
-        app.scoreBar = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/scoreBar.png'))
+        app.topNoteDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/noteDecorum1.png'))
+        app.botWallpaper = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/wallpaper2.png'))
+        app.botDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/hexagon2.png'))
+        app.botNoteDecorum = ImageTk.PhotoImage(app.loadImage('image_folder/twoPlayerUI/noteDecorum2.png'))
+        app.botDecorumx = 0
+        app.botWallpaperx = 0
         app.difficultyEasy = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/easy.png'))
         app.difficultyNormal = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/normal.png'))
         app.difficultyHard = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/hard.png'))
         app.rollFan = ImageTk.PhotoImage(app.loadImage('image_folder/playerUI/Fan.png'))
 
-    def drawNote(self, app, canvas, note, x, end=0):
+    def drawTopNote(self, app, canvas, note, x, end=0):
         if note == 'don':
-            canvas.create_image(x, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.don, 68/80)))
+            canvas.create_image(x, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.don, 68/80)))
         if note == 'kat':
-            canvas.create_image(x, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.kat, 68/80)))
+            canvas.create_image(x, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.kat, 68/80)))
         if note == 'Ddon':
-            canvas.create_image(x, 295, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Ddon, 96/121)))
+            canvas.create_image(x, 253, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Ddon, 96/121)))
         if note == 'Dkat':
-            canvas.create_image(x, 295, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Dkat, 96/121)))
+            canvas.create_image(x, 253, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Dkat, 96/121)))
         if note == 'roll':
-            canvas.create_image(x, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.roll, 68/80)))
+            canvas.create_image(x, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.roll, 68/80)))
         if note == 'rollEnd':
             for y in range(int(x + 44), int(end - 90), 10):
-                canvas.create_image(y, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollLine, 68/80)))
-            if end - 80 > x + 80: canvas.create_image(end - 80, 310, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 68/80)))
-            self.drawNote(app, canvas, 'roll', x)
+                canvas.create_image(y, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollLine, 68/80)))
+            if end - 80 > x + 80: canvas.create_image(end - 80, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 68/80)))
+            self.drawTopNote(app, canvas, 'roll', x)
 
-    def drawClouds(self, app, canvas, x):
-        canvas.create_image(x, 0, anchor=NW, image=app.clouds)
+    def drawBotNote(self, app, canvas, note, x, end=0):
+        if note == 'don':
+            canvas.create_image(x, 434, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.don, 68/80)))
+        if note == 'kat':
+            canvas.create_image(x, 434, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.kat, 68/80)))
+        if note == 'Ddon':
+            canvas.create_image(x, 419, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Ddon, 96/121)))
+        if note == 'Dkat':
+            canvas.create_image(x, 419, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.Dkat, 96/121)))
+        if note == 'roll':
+            canvas.create_image(x, 434, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.roll, 68/80)))
+        if note == 'rollEnd':
+            for y in range(int(x + 44), int(end - 90), 10):
+                canvas.create_image(y, 434, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollLine, 68/80)))
+            if end - 80 > x + 80: canvas.create_image(end - 80, 434, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.rollEnd, 68/80)))
+            self.drawBotNote(app, canvas, 'roll', x)
 
-    def drawTimeline(self, app, canvas):
-        canvas.create_image(0, 276, anchor=NW, image=app.timeline)
-
-    def drawWallpaper(self, app, canvas, x):
+    def drawTopWallpaper(self, app, canvas, x):
         canvas.create_image(x, 0, anchor=NW, image=app.topWallpaper)
 
-    def drawBackground(self, app, canvas):
-        canvas.create_image(0, 440, anchor=NW, image=app.bottomBackground)
+    def drawTopTimeline(self, app, canvas):
+        canvas.create_image(0, 234, anchor=NW, image=app.timeline)
 
-    def drawBottomDecorum(self, app, canvas):
-        canvas.create_image(0, 768, anchor=NW, image=app.bottomDecorum)
+    def drawTopDecorum(self, app, canvas, x):
+        canvas.create_image(x, 0, anchor=NW, image=app.topDecorum)
 
-    def drawIndicator(self, app, canvas):
-        canvas.create_image(328, 293, anchor=NW, image=app.indicator)
+    def drawTopNoteDecorum(self, app, canvas):
+        canvas.create_image(0, 234, anchor=NW, image=app.topNoteDecorum)
 
-    def drawNoteDecorum(self, app, canvas):
-        canvas.create_image(0, 276, anchor=NW, image=app.noteDecorum)
+    def drawBotWallpaper(self, app, canvas, x):
+        canvas.create_image(x, 532, anchor=NW, image=app.botWallpaper)
 
-    def drawTaiko(self, app, canvas):
-        canvas.create_image(191, 294, anchor=NW, image=app.taiko)
+    def drawBotTimeline(self, app, canvas):
+        canvas.create_image(0, 400, anchor=NW, image=app.timeline)
 
-    def drawDonRight(self, app, canvas):
-        canvas.create_image(237, 301, anchor=NW, image=app.donRight)
+    def drawBotDecorum(self, app, canvas, x):
+        canvas.create_image(x, 532, anchor=NW, image=app.botDecorum)
 
-    def drawDonLeft(self, app, canvas):
-        canvas.create_image(204, 301, anchor=NW, image=app.donLeft)
+    def drawBotNoteDecorum(self, app, canvas):
+        canvas.create_image(0, 400, anchor=NW, image=app.botNoteDecorum)
 
-    def drawKatLeft(self, app, canvas):
-        canvas.create_image(190, 290, anchor=NW, image=app.katLeft)
+    def drawTopDonRight(self, app, canvas):
+        canvas.create_image(237, 259, anchor=NW, image=app.donRight)
 
-    def drawKatRight(self, app, canvas):
-        canvas.create_image(240, 290, anchor=NW, image=app.katRight)
+    def drawTopDonLeft(self, app, canvas):
+        canvas.create_image(204, 259, anchor=NW, image=app.donLeft)
+
+    def drawTopKatLeft(self, app, canvas):
+        canvas.create_image(190, 248, anchor=NW, image=app.katLeft)
+
+    def drawTopKatRight(self, app, canvas):
+        canvas.create_image(240, 248, anchor=NW, image=app.katRight)
+
+    def drawBotDonRight(self, app, canvas):
+        canvas.create_image(237, 425, anchor=NW, image=app.donRight)
+
+    def drawBotDonLeft(self, app, canvas):
+        canvas.create_image(204, 425, anchor=NW, image=app.donLeft)
+
+    def drawBotKatLeft(self, app, canvas):
+        canvas.create_image(190, 414, anchor=NW, image=app.katLeft)
+
+    def drawBotKatRight(self, app, canvas):
+        canvas.create_image(240, 414, anchor=NW, image=app.katRight)
 
     def drawScoreBar(self, app, canvas):
         canvas.create_image(25, 384, anchor=NW, image=app.scoreBar)
 
-    def drawRollFan(self, app, canvas):
-        canvas.create_image(256, 114, anchor=NW, image=app.rollFan)
-        canvas.create_image(317, 138, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.rollCounter//10%10], 66/57)))
-        canvas.create_image(374, 138, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.rollCounter%10], 66/57)))
+    def drawTopRollFan(self, app, canvas):
+        canvas.create_image(256, 76, anchor=NW, image=app.rollFan)
+        canvas.create_image(317, 102, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topRollCounter//10%10], 66/57)))
+        canvas.create_image(374, 102, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topRollCounter%10], 66/57)))
 
-    def drawScore(self, app, canvas):
-        if app.score >= 10000:
-            canvas.create_image(62, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 10000 % 10], 35/57)))
-        if app.score >= 1000:
-            canvas.create_image(89, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 1000 % 10], 35/57)))
-        if app.score >= 100:
-            canvas.create_image(116, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 100 % 10], 35/57)))
-        if app.score >= 10:
-            canvas.create_image(144, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 10 % 10], 35/57)))
-        canvas.create_image(170, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score % 10], 35/57)))
+    def drawBotRollFan(self, app, canvas):
+        canvas.create_image(256, 568, anchor=NW, image=app.rollFan)
+        canvas.create_image(317, 592, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botRollCounter//10%10], 66/57)))
+        canvas.create_image(374, 592, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botRollCounter%10], 66/57)))
 
-    def drawCombo(self, app, canvas):
+    def drawTopScore(self, app, canvas):
+        if app.topScore >= 10000:
+            canvas.create_image(62, 347, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topScore // 10000 % 10], 35/57)))
+        if app.topScore >= 1000:
+            canvas.create_image(89, 347, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topScore // 1000 % 10], 35/57)))
+        if app.topScore >= 100:
+            canvas.create_image(116, 347, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topScore // 100 % 10], 35/57)))
+        if app.topScore >= 10:
+            canvas.create_image(144, 347, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topScore // 10 % 10], 35/57)))
+        canvas.create_image(170, 347, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topScore % 10], 35/57)))
+
+    def drawBotScore(self, app, canvas):
+        if app.botScore >= 10000:
+            canvas.create_image(62, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore // 10000 % 10], 35/57)))
+        if app.botScore >= 1000:
+            canvas.create_image(89, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore // 1000 % 10], 35/57)))
+        if app.botScore >= 100:
+            canvas.create_image(116, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore // 100 % 10], 35/57)))
+        if app.botScore >= 10:
+            canvas.create_image(144, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore // 10 % 10], 35/57)))
+        canvas.create_image(170, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore % 10], 35/57)))
+
+    def drawTopCombo(self, app, canvas):
         if app.streak > 9:
-            canvas.create_image(203, 303, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak//10%10], 50/57)))
-        canvas.create_image(244, 303, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak%10], 50/57)))
-        canvas.create_image(225, 360, anchor=NW, image=app.combo)
+            canvas.create_image(203, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak//10%10], 50/57)))
+        canvas.create_image(244, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak%10], 50/57)))
+        canvas.create_image(225, 325, anchor=NW, image=app.combo)
+
+    def drawBotCombo(self, app, canvas):
+        if app.streak > 9:
+            canvas.create_image(203, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak//10%10], 50/57)))
+        canvas.create_image(244, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak%10], 50/57)))
+        canvas.create_image(225, 489, anchor=NW, image=app.combo)
 
     def drawDifficulty(self, app, canvas):
         if app.level.getDifficulty() == 'easy':
