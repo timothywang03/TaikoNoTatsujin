@@ -30,28 +30,33 @@ def twoPlayer_keyPressed(app, event):
     app.frameLeft += 10
 
 def twoPlayer_timerFired(app):
+
+    # if the level started playing
     if app.started is False:
         app.started = True
         pygame.mixer.music.play()
 
+    # run as long as there are still notes left
     if len(app.topNoteQueue) > 0:
         if app.indicatorx > app.topNoteQueue[0].getEnd() - app.frameLeft:
             app.topNoteQueue.pop(0)
             app.topCurrentNote = None
             app.rollStarted = False
+            app.topRollCounter = 0
 
     if len(app.botNoteQueue) > 0:
         if app.indicatorx > app.botNoteQueue[0].getEnd() - app.frameLeft:
             app.botNoteQueue.pop(0)
             app.botCurrentNote = None
             app.rollStarted = False
+            app.botRollCounter = 0
 
+    # score the current note and hit it moving it on
     if len(app.topNoteQueue) > 0:
         if app.topNoteQueue[0].getNoteStart() - app.frameLeft <= app.indicatorx <= app.topNoteQueue[0].getEnd() - app.frameLeft:
             app.topCurrentNote = app.topNoteQueue[0]
             if app.topCurrentNote.getType() == 'roll' and app.rollStarted is False:
                 app.rollStarted = True
-                app.topRollCounter = 0
 
         if app.topCurrentNote is not None:
             if len(app.topKeysPressed) != 0:
@@ -72,7 +77,6 @@ def twoPlayer_timerFired(app):
             app.botCurrentNote = app.botNoteQueue[0]
             if app.botCurrentNote.getType() == 'roll' and app.rollStarted is False:
                 app.rollStarted = True
-                app.rollCounter = 0
 
         if app.botCurrentNote is not None:
             if len(app.botKeysPressed) != 0:
@@ -88,8 +92,10 @@ def twoPlayer_timerFired(app):
                 else:
                     app.botScore += app.botCurrentNote.hitScore(app)
 
-        app.keysPressed = set()
+        app.topKeysPressed = set()
+        app.botKeysPressed = set()
 
+        # shift the decorum
         app.topDecorumx -= 5
         app.botDecorumx -= 5
         app.topWallpaperx -= 2

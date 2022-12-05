@@ -215,15 +215,15 @@ class UI:
         canvas.create_image(170, 414, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botScore % 10], 35/57)))
 
     def drawTopCombo(self, app, canvas):
-        if app.streak > 9:
-            canvas.create_image(203, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak//10%10], 50/57)))
-        canvas.create_image(244, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak%10], 50/57)))
+        if app.topStreak > 9:
+            canvas.create_image(203, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topStreak//10%10], 50/57)))
+        canvas.create_image(244, 268, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.topStreak%10], 50/57)))
         canvas.create_image(225, 325, anchor=NW, image=app.combo)
 
     def drawBotCombo(self, app, canvas):
-        if app.streak > 9:
-            canvas.create_image(203, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak//10%10], 50/57)))
-        canvas.create_image(244, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.streak%10], 50/57)))
+        if app.botStreak > 9:
+            canvas.create_image(203, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botStreak//10%10], 50/57)))
+        canvas.create_image(244, 432, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.botStreak%10], 50/57)))
         canvas.create_image(225, 489, anchor=NW, image=app.combo)
 
     def drawDifficulty(self, app, canvas):

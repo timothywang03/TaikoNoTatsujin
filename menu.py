@@ -1,99 +1,61 @@
-# This demos using modes (aka screens).
-
 from cmu_112_graphics import *
-import random
+from level import Level
+import creatorUI
+import playerUI
+import twoPlayerUI
 
-##########################################
-# Splash Screen Mode
-##########################################
+def menu_mousePressed(app, event):
+    if app.loadScreen is True:
+        if 384 <= event.x <= 496 and 394 <= event.y <= 506:
+            app.diffSelected = 'easy'
+        if 584 <= event.x <= 696 and 394 <= event.y <= 506:
+            app.diffSelected = 'normal'
+        if 784 <= event.x <= 896 and 394 <= event.y <= 506:
+            app.diffSelected = 'hard'
+        if 394 <= event.x <= 885 and 317 <= event.y <= 377:
+            app.levelEntered = app.getUserInput('')
+        if 548 <= event.x <= 622 and 520 <= event.y <= 577:
+            if app.clicked == 'creator':
+                if app.diffSelected is not None and app.levelEntered is not None:
+                    app.mode = 'creator'
+                    app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                    app.level.loadNotes()
+                    app.ui = creatorUI.UI(app)
+            if app.clicked == 'player':
+                if app.diffSelected is not None and app.levelEntered is not None:
+                    app.mode = 'player'
+                    app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                    app.level.loadNotes()
+                    app.ui = playerUI.UI(app)
+                    app.level.initiateSong(app)
+            if app.clicked == 'twoPlayer':
+                if app.diffSelected is not None and app.levelEntered is not None:
+                    app.mode = 'twoPlayer'
+                    app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                    app.level.loadNotes()
+                    app.ui = twoPlayer.UI(app)
+                    app.level.initiateSong(app)
 
-def splashScreenMode_redrawAll(app, canvas):
-    font = 'Arial 26 bold'
-    canvas.create_text(app.width/2, 150, text='This demos a ModalApp!',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 200, text='This is a modal splash screen!',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 250, text='Press any key for the game!',
-                       font=font, fill='black')
+    if 733 <= event.x <= 1133 and 150 <= event.y <= 250:
+        app.loadScreen = True
+        app.clicked = 'creator'
+    if 733 <= event.x <= 1133 and 350 <= event.y <= 450:
+        app.loadScreen = True
+        app.clicked = 'player'
+    if 733 <= event.x <= 1133 and 550 <= event.y <= 650:
+        app.loadScreen = True
+        app.clicked = 'twoPlayer'
 
-def splashScreenMode_keyPressed(app, event):
-    app.mode = 'gameMode'
-
-##########################################
-# Game Mode
-##########################################
-
-def gameMode_redrawAll(app, canvas):
-    font = 'Arial 26 bold'
-    canvas.create_text(app.width/2, 20, text=f'Score: {app.score}',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 60, text='Click on the dot!',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 100, text='Press h for help screen!',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 140, text='Press v for an MVC Violation!',
-                       font=font, fill='black')
-    canvas.create_oval(app.x-app.r, app.y-app.r, app.x+app.r, app.y+app.r,
-                       fill=app.color)
-    if app.makeAnMVCViolation:
-        app.ohNo = 'This is an MVC Violation!'
-
-def gameMode_timerFired(app):
-    moveDot(app)
-
-def gameMode_mousePressed(app, event):
-    d = ((app.x - event.x)**2 + (app.y - event.y)**2)**0.5
-    if (d <= app.r):
-        app.score += 1
-        randomizeDot(app)
-    elif (app.score > 0):
-        app.score -= 1
-
-def gameMode_keyPressed(app, event):
-    if (event.key == 'h'):
-        app.mode = 'helpMode'
-    elif (event.key == 'v'):
-        app.makeAnMVCViolation = True
-
-##########################################
-# Help Mode
-##########################################
-
-def helpMode_redrawAll(app, canvas):
-    font = 'Arial 26 bold'
-    canvas.create_text(app.width/2, 150, text='This is the help screen!',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 250, text='(Insert helpful message here)',
-                       font=font, fill='black')
-    canvas.create_text(app.width/2, 350, text='Press any key to return to the game!',
-                       font=font, fill='black')
-
-def helpMode_keyPressed(app, event):
-    app.mode = 'gameMode'
-
-##########################################
-# Main App
-##########################################
-
-def appStarted(app):
-    app.mode = 'splashScreenMode'
-    app.score = 0
-    app.timerDelay = 50
-    app.makeAnMVCViolation = False
-    randomizeDot(app)
-
-def randomizeDot(app):
-    app.x = random.randint(20, app.width-20)
-    app.y = random.randint(20, app.height-20)
-    app.r = random.randint(10, 20)
-    app.color = random.choice(['red', 'orange', 'yellow', 'green', 'blue'])
-    app.dx = random.choice([+1,-1])*random.randint(3,6)
-    app.dy = random.choice([+1,-1])*random.randint(3,6)
-
-def moveDot(app):
-    app.x += app.dx
-    if (app.x < 0) or (app.x > app.width): app.dx = -app.dx
-    app.y += app.dy
-    if (app.y < 0) or (app.y > app.height): app.dy = -app.dy
-
-runApp(width=600, height=500)
+def menu_redrawAll(app, canvas):
+    app.ui.drawMenuBackground(app, canvas)
+    if app.loadScreen is True:
+        app.ui.drawLoadLevel(app, canvas)
+        if app.diffSelected == 'easy':
+            app.ui.drawSelection(app, canvas, 376)
+        if app.diffSelected == 'normal':
+            app.ui.drawSelection(app, canvas, 576)
+        if app.diffSelected == 'hard':
+            app.ui.drawSelection(app, canvas, 776)
+        app.ui.drawDifficulties(app, canvas)
+    if app.levelEntered is not None:
+        canvas.create_text(640, 340, text=app.levelEntered, font='Arial 36')

@@ -2,12 +2,8 @@ from cmu_112_graphics import *
 from creator import *
 from player import *
 from twoPlayer import *
-import creatorUI
-import playerUI
-import twoPlayerUI
-import pygame
-from note import Note, Roll
-from level import Level
+from title import *
+from menu import *
 
 # ALL IMAGES ARE FROM WEBSITE https://www.spriters-resource.com/nintendo_switch/taikonotatsujindrumnfun/
 # Yoru ni Kakeru downloaded from https://www.youtube.com/watch?v=vEyPvak2K9o&ab_channel=MidnightSoul
@@ -15,16 +11,8 @@ from level import Level
 def appStarted(app):
     app.width = app.width
     app.height = app.height
-    app.mode = 'twoPlayer'
-    app.level = Level('Yoru Ni Kakeru', dict(), 34, 130, 'yoru_ni_kakeru.mp3', 'normal') # CITE
-    app.level.loadNotes()
-    if app.mode == 'twoPlayer':
-        app.level.initiateSong(app)
-        app.ui = twoPlayerUI.UI(app)
-    if app.mode == 'creator':
-        app.ui = creatorUI.UI(app)
-    if app.mode == 'player':
-        app.level.initiateSong(app)
-        app.ui = playerUI.UI(app)
+    app.titleScreen = app.loadImage('image_folder/title/titleScreen.png')
+    app.keyButton = app.loadImage('image_folder/title/keyButton.png')
+    app.mode = 'title'
 
 runApp(width=1280, height=800)

@@ -142,6 +142,8 @@ class UI:
         canvas.create_image(374, 138, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.rollCounter%10], 66/57)))
 
     def drawScore(self, app, canvas):
+
+        # draws each digit of the current score
         if app.score >= 10000:
             canvas.create_image(62, 390, anchor=NW, image=ImageTk.PhotoImage(app.scaleImage(app.numbers[app.score // 10000 % 10], 35/57)))
         if app.score >= 1000:

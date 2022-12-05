@@ -1,7 +1,10 @@
 from cmu_112_graphics import *
 
+
 class Note:
     def __init__(self, type, level, noteStart, noteEnd=0):
+
+        # inherent variables
         self.type = type
         self.level = level
         self.levelLengthPix = level.getLength() ** 2 / 60 * level.getBpm() * 5
@@ -12,8 +15,10 @@ class Note:
             self.noteEnd = noteEnd      # pixel that the note wll end
         self.noteMid = (self.noteStart + self.noteEnd) / 2
         self.hit = False
+
+        # timing constants
         if self.type == 'don' or self.type == 'kat':
-            self.good = 10 # ms
+            self.good = 10  # ms
             self.ok = 15
             self.bad = 20
         else:
@@ -33,6 +38,7 @@ class Note:
             self.keys = [{'f'}, {'j'}]
 
     def hitNote(self, position):
+        '''Sets the position to the time that the note was hit'''
         self.hit = position
 
     def getHit(self):
@@ -51,7 +57,7 @@ class Note:
         return self.noteEnd
 
     def hitScore(self, app):
-        # return the score from hitting a note based on accuracy
+        '''Returns the score that the note yields when hitting it'''
         score = 0
         if self.getType() == 'roll':
             return 100
@@ -90,9 +96,12 @@ class Note:
     def addEnd(self, timestamp):
         self.noteEnd = timestamp
 
+
 class PlayerOneNote(Note):
     def __init__(self, type, level, noteStart, noteEnd=0):
         super().__init__(type, level, noteStart, noteEnd)
+
+        # changes the notes hit depending on player
         if self.type == 'don':
             self.keys = [{'s'}, {'d'}]
         if self.type == 'kat':
@@ -137,6 +146,7 @@ class PlayerOneNote(Note):
         else:
             score *= 0.1
         return score
+
 
 class PlayerTwoNote(Note):
     def __init__(self, type, level, noteStart, noteEnd=0):
@@ -185,6 +195,7 @@ class PlayerTwoNote(Note):
         else:
             score *= 0.1
         return score
+
 
 class Roll(Note):
     def __init__(self, noteStart, noteEnd):
