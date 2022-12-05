@@ -143,13 +143,14 @@ class UI:
         canvas.create_image(183, 94, anchor=NW, image=app.saveScreen)
         canvas.create_text(681, 163, anchor=NW, text=levelName, font='Arial 36')
         canvas.create_text(817, 271, anchor=NW, text=str(bpm), font='Arial 36')
-        canvas.create_image(543, 361, anchor=NW, image=app.difficulties)
         if difficulty == 'easy':
             canvas.create_image(535, 352, anchor=NW, image=app.selection)
         elif difficulty == 'normal':
             canvas.create_image(735, 352, anchor=NW, image=app.selection)
         elif difficulty == 'hard':
             canvas.create_image(935, 352, anchor=NW, image=app.selection)
+        canvas.create_image(543, 361, anchor=NW, image=app.difficulties)
+
 
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)
