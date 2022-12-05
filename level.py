@@ -68,10 +68,7 @@ class Level:
             f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
 
     def loadNotes(level):
-        try:
-            f = open(f'{level.name}_{level.difficulty}.txt', 'r')
-        except:
-            return -1
+        f = open(f'{level.name}_{level.difficulty}.txt', 'r')
         for line in f.readlines()[5:]:
             line = line.split()
             level.notes[float(line[1])] = Note(line[0], level, float(line[1]), float(line[2]))
