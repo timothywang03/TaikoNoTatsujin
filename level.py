@@ -58,7 +58,7 @@ class Level:
         del self.notes[timestamp]
 
     def saveLevel(self):
-        f = open(f'{self.name}_{self.difficulty}.txt', 'w')
+        f = open(f'levels/{self.name}_{self.difficulty}.txt', 'w')
         f.write(f'Level Name: {self.name}\n')
         f.write(f'BPM: {self.bpm}\n')
         f.write(f'Song: {self.song}\n')
@@ -68,7 +68,7 @@ class Level:
             f.write(f'{v.getType()} {v.getNoteStart()} {v.getEnd()}\n')
 
     def loadNotes(level):
-        f = open(f'{level.name}_{level.difficulty}.txt', 'r')
+        f = open(f'levels/{level.name}_{level.difficulty}.txt', 'r')
         for line in f.readlines()[5:]:
             line = line.split()
             level.notes[float(line[1])] = Note(line[0], level, float(line[1]), float(line[2]))

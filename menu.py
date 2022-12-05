@@ -23,6 +23,8 @@ def menu_mousePressed(app, event):
                     app.mode = 'creator'
             if app.clicked == 'player':
                 if app.diffSelected is not None and app.levelEntered is not None:
+
+                    # make sure the level selected exists
                     try:
                         app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
                         app.level.loadNotes()
