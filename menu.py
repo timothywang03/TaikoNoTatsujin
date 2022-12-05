@@ -14,7 +14,7 @@ def menu_mousePressed(app, event):
             app.diffSelected = 'hard'
         if 394 <= event.x <= 885 and 317 <= event.y <= 377:
             app.levelEntered = app.getUserInput('')
-        if 548 <= event.x <= 622 and 520 <= event.y <= 577:
+        if 548 <= event.x <= 732 and 520 <= event.y <= 577:
             if app.clicked == 'creator':
                 if app.diffSelected is not None and app.levelEntered is not None:
                     app.mode = 'creator'
