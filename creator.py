@@ -4,6 +4,7 @@ from math import floor
 import pygame
 import time
 
+
 def creator_mousePressed(app, event):
     if app.saveLevel is True:
         if 611 <= event.x <= 1005 and 145 <= event.y <= 226:
@@ -61,28 +62,32 @@ def creator_mousePressed(app, event):
             app.currently_selected = 'playButton'
             app.indicatorx = app.frameLeft
             # since only allows integer values, the starting point of the music will be quite inaccurate
-            pygame.mixer.music.play(int(app.frameLeft/app.levelLengthPix * app.level.getLength()))
+            pygame.mixer.music.play(
+                int(app.frameLeft / app.levelLengthPix * app.level.getLength()))
 
     if app.currently_selected in app.noteTypes:
         if app.currently_selected == 'rollEnd':
             app.level.getNotes()[app.rollStart].addEnd(event.x + app.frameLeft)
-            app.level.getNotes()[app.rollStart].translateTime(app)
             app.currently_selected = None
             app.hover = None
 
         elif app.hover is not None:
             if app.ui.checkOverlap(app, app.hover + app.frameLeft) is False:
                 if app.currently_selected == 'don':
-                    add = Note('don', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    add = Note('don', app.level, event.x +
+                               app.frameLeft, event.x + app.frameLeft + 80)
                     app.level.addNote(event.x + app.frameLeft, add)
                 elif app.currently_selected == 'kat':
-                    add = Note('kat', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 80)
+                    add = Note('kat', app.level, event.x +
+                               app.frameLeft, event.x + app.frameLeft + 80)
                     app.level.addNote(event.x + app.frameLeft, add)
                 elif app.currently_selected == 'Ddon':
-                    add = Note('Ddon', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    add = Note('Ddon', app.level, event.x +
+                               app.frameLeft, event.x + app.frameLeft + 121)
                     app.level.addNote(event.x + app.frameLeft, add)
                 elif app.currently_selected == 'Dkat':
-                    add = Note('Dkat', app.level, event.x + app.frameLeft, event.x + app.frameLeft + 121)
+                    add = Note('Dkat', app.level, event.x +
+                               app.frameLeft, event.x + app.frameLeft + 121)
                     app.level.addNote(event.x + app.frameLeft, add)
                 elif app.currently_selected == 'roll':
                     add = Note('roll', app.level, event.x + app.frameLeft)
@@ -97,6 +102,7 @@ def creator_mousePressed(app, event):
             else:
                 app.error = 'overlap'
 
+
 def creator_keyPressed(app, event):
     if event.key == 'Escape':
         app.currently_selected = None
@@ -108,12 +114,14 @@ def creator_keyPressed(app, event):
             app.level.removeNote(app.currently_selected)
             app.currently_selected = None
 
+
 def creator_mouseMoved(app, event):
     if app.currently_selected in app.noteTypes:
         if 250 <= event.y <= 400:
             app.hover = event.x
         else:
             app.hover = None
+
 
 def creator_mouseDragged(app, event):
     if app.currently_selected == 'scrollMarker':
@@ -125,13 +133,16 @@ def creator_mouseDragged(app, event):
             app.scrollx = 897
     app.ui.calcFrame(app)
 
+
 def creator_timerFired(app):
     if app.currently_selected == 'playButton':
         app.ui.playback(app)
 
+
 def creator_mouseReleased(app, event):
     if app.currently_selected == 'scrollMarker':
         app.currently_selected = None
+
 
 def creator_redrawAll(app, canvas):
     app.ui.drawBackground(app, canvas)
@@ -148,14 +159,19 @@ def creator_redrawAll(app, canvas):
     for timestamp in sorted(app.level.getNotes(), reverse=True):
         note = app.level.getNotes()[timestamp]
         if note.getHit() is False:
-            app.ui.drawNote(app, canvas, note.getType(), timestamp - app.frameLeft, note.getEnd() - app.frameLeft)
+            app.ui.drawNote(app, canvas, note.getType(), timestamp -
+                            app.frameLeft, note.getEnd() - app.frameLeft)
             if note.getType() == 'roll':
-                app.ui.drawNote(app, canvas, 'rollEnd', timestamp - app.frameLeft, note.getEnd() - app.frameLeft)
+                app.ui.drawNote(app, canvas, 'rollEnd', timestamp -
+                                app.frameLeft, note.getEnd() - app.frameLeft)
 
     if app.currently_selected in app.noteTypes and app.hover is not None:
         if app.currently_selected == 'rollEnd':
-            app.ui.drawNote(app, canvas, app.currently_selected, app.rollStart, app.hover)
+            app.ui.drawNote(app, canvas, app.currently_selected,
+                            app.rollStart - app.frameLeft, app.hover)
         else:
             app.ui.drawNote(app, canvas, app.currently_selected, app.hover)
 
-    if app.saveLevel is True: app.ui.drawSaveScreen(app, canvas, app.level.getName(), app.level.getBpm(), app.level.getDifficulty())
+    if app.saveLevel is True:
+        app.ui.drawSaveScreen(app, canvas, app.level.getName(
+        ), app.level.getBpm(), app.level.getDifficulty())

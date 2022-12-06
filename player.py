@@ -8,15 +8,18 @@ import time
 def player_keyPressed(app, event):
     if event.key == 'f':
         app.keysPressed.add('f')
-        if app.currentNote is not None and app.currentNote.getType() == 'roll': app.rollCounter += 1
+        if app.currentNote is not None and app.currentNote.getType() == 'roll':
+            app.rollCounter += 1
     if event.key == 'j':
         app.keysPressed.add('j')
-        if app.currentNote is not None and app.currentNote.getType() == 'roll': app.rollCounter += 1
+        if app.currentNote is not None and app.currentNote.getType() == 'roll':
+            app.rollCounter += 1
     if event.key == 'd':
         app.keysPressed.add('d')
     if event.key == 'k':
         app.keysPressed.add('k')
     app.frameLeft += 10
+
 
 def player_timerFired(app):
     if app.started is False:
@@ -61,6 +64,7 @@ def player_timerFired(app):
         app.frameLeft += 20
         app.time += 10
 
+
 def player_redrawAll(app, canvas):
     app.ui.drawBackground(app, canvas)
     app.ui.drawBottomDecorum(app, canvas)
@@ -72,22 +76,29 @@ def player_redrawAll(app, canvas):
     for timestamp in sorted(app.level.getNotes(), reverse=True):
         note = app.level.getNotes()[timestamp]
         if note.getHit() is False:
-            app.ui.drawNote(app, canvas, note.getType(), timestamp - app.frameLeft, note.getEnd() - app.frameLeft)
+            app.ui.drawNote(app, canvas, note.getType(), timestamp -
+                            app.frameLeft, note.getEnd() - app.frameLeft)
             if note.getType() == 'roll':
-                app.ui.drawNote(app, canvas, 'rollEnd', timestamp - app.frameLeft, note.getEnd() - app.frameLeft)
+                app.ui.drawNote(app, canvas, 'rollEnd', timestamp -
+                                app.frameLeft, note.getEnd() - app.frameLeft)
 
     app.ui.drawNoteDecorum(app, canvas)
     app.ui.drawScoreBar(app, canvas)
     app.ui.drawTaiko(app, canvas)
 
     for x in app.keysPressed:
-        if x == 'donLeft': app.ui.drawDonLeft(app, canvas)
-        if x == 'donRight': app.ui.drawDonRight(app, canvas)
-        if x == 'katLeft': app.ui.drawKatLeft(app, canvas)
-        if x == 'katRight': app.ui.drawKatRight(app, canvas)
+        if x == 'donLeft':
+            app.ui.drawDonLeft(app, canvas)
+        if x == 'donRight':
+            app.ui.drawDonRight(app, canvas)
+        if x == 'katLeft':
+            app.ui.drawKatLeft(app, canvas)
+        if x == 'katRight':
+            app.ui.drawKatRight(app, canvas)
 
     app.ui.drawDifficulty(app, canvas)
     app.ui.drawScore(app, canvas)
-    if app.streak >= 10: app.ui.drawCombo(app, canvas)
+    if app.streak >= 10:
+        app.ui.drawCombo(app, canvas)
     if app.currentNote is not None and app.currentNote.getType() == 'roll':
         app.ui.drawRollFan(app, canvas)

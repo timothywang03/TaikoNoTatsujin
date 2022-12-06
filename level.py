@@ -1,6 +1,7 @@
 import pygame
 from note import Note, Roll
 
+
 class Level:
     def __init__(self, name, notes, length, bpm, song, difficulty):
         self.name = name
@@ -71,7 +72,8 @@ class Level:
         f = open(f'levels/{level.name}_{level.difficulty}.txt', 'r')
         for line in f.readlines()[5:]:
             line = line.split()
-            level.notes[float(line[1])] = Note(line[0], level, float(line[1]), float(line[2]))
+            level.notes[float(line[1])] = Note(
+                line[0], level, float(line[1]), float(line[2]))
 
     def __str__(self):
         return f'{self.name}, {len(self.notes)}'

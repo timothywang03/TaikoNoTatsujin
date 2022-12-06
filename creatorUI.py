@@ -3,6 +3,7 @@ from note import Note, Roll
 import pygame
 import time
 
+
 class UI:
     def __init__(self, app):
         # ALL IMAGES ARE FROM WEBSITE https://www.spriters-resource.com/nintendo_switch/taikonotatsujindrumnfun/
@@ -17,81 +18,111 @@ class UI:
         app.hover = None
 
         # FRAME VISUALS
-        app.scrollBar = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/scrollBar.png'))
-        app.scrollMarker = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/scrollMarker.png'))
+        app.scrollBar = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/scrollBar.png'))
+        app.scrollMarker = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/scrollMarker.png'))
         app.scrollx = 0   # the default level start position
         app.frameLeft = 0
         app.frameRight = app.frameLeft + 1280
         app.pixelsPerBeat = app.level.getBpm() * 5
-        app.levelLengthPix = app.level.getLength() / 60 * app.level.getBpm() * app.pixelsPerBeat
+        app.levelLengthPix = app.level.getLength() / 60 * app.level.getBpm() * \
+            app.pixelsPerBeat
         app.reached_middle = False
         app.currently_selected = None
-        app.beatLine = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/beatLine.png'))
+        app.beatLine = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/beatLine.png'))
 
         # MUSIC
         app.level.initiateSong(app)
-        app.indicator = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playbackIndicator.png'))
+        app.indicator = ImageTk.PhotoImage(app.loadImage(
+            'image_folder/creatorUI/playbackIndicator.png'))
         app.indicatorx = 0
         app.timerDelay = 10
         app.musicStarted = False
 
         # ERROR MESSAGES
-        app.directions = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/directions.png'))
-        app.overlapError = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/overlapError.png'))
-        app.playbackError = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playbackError.png'))
+        app.directions = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/directions.png'))
+        app.overlapError = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/overlapError.png'))
+        app.playbackError = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/playbackError.png'))
         app.error = None
 
         # MISCELLANIOUS
-        app.noteBar = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/noteBar.png'))
-        app.background = app.loadImage('image_folder/creatorUI/creatorBackground.png')
-        app.background = ImageTk.PhotoImage(app.scaleImage(app.background, 2.5/2))
-        app.errorBox = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/errorBox.png'))
+        app.noteBar = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/noteBar.png'))
+        app.background = app.loadImage(
+            'image_folder/creatorUI/creatorBackground.png')
+        app.background = ImageTk.PhotoImage(
+            app.scaleImage(app.background, 2.5 / 2))
+        app.errorBox = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/errorBox.png'))
         app.errorMessage = ''
-        app.playButton = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/playButton.png'))
+        app.playButton = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/playButton.png'))
 
         # SAVE SCREEN
-        app.saveScreen = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/saveScreen.png'))
-        app.difficulties = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/difficulties.png'))
+        app.saveScreen = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/saveScreen.png'))
+        app.difficulties = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/difficulties.png'))
         app.saveLevel = False
         app.difficultySelected = None
         app.levelNameSelected = None
         app.beatsPerMinuteSelected = None
-        app.selection = ImageTk.PhotoImage(app.loadImage('image_folder/creatorUI/selection.png'))
+        app.selection = ImageTk.PhotoImage(
+            app.loadImage('image_folder/creatorUI/selection.png'))
 
     def drawTimeline(self, app, canvas):
         canvas.create_rectangle(0, 250, 1280, 400, fill='#383838')
 
     def drawNoteSelection(self, app, canvas):
         canvas.create_image(183, 615, anchor=NW, image=app.noteBar)
-        canvas.create_image(243, 658, anchor=NW,image=ImageTk.PhotoImage(app.don))
-        canvas.create_image(401, 658, anchor=NW,image=ImageTk.PhotoImage(app.kat))
-        canvas.create_image(559, 658, anchor=NW,image=ImageTk.PhotoImage(app.roll))
-        canvas.create_image(717, 637, anchor=NW,image=ImageTk.PhotoImage(app.Ddon))
-        canvas.create_image(916, 637, anchor=NW,image=ImageTk.PhotoImage(app.Dkat))
+        canvas.create_image(243, 658, anchor=NW,
+                            image=ImageTk.PhotoImage(app.don))
+        canvas.create_image(401, 658, anchor=NW,
+                            image=ImageTk.PhotoImage(app.kat))
+        canvas.create_image(559, 658, anchor=NW,
+                            image=ImageTk.PhotoImage(app.roll))
+        canvas.create_image(717, 637, anchor=NW,
+                            image=ImageTk.PhotoImage(app.Ddon))
+        canvas.create_image(916, 637, anchor=NW,
+                            image=ImageTk.PhotoImage(app.Dkat))
 
     def drawNote(self, app, canvas, note, x, end=0):
         if note == 'don':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.don))
+            canvas.create_image(x, 285, anchor=NW,
+                                image=ImageTk.PhotoImage(app.don))
         if note == 'kat':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.kat))
+            canvas.create_image(x, 285, anchor=NW,
+                                image=ImageTk.PhotoImage(app.kat))
         if note == 'Ddon':
-            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.Ddon))
+            canvas.create_image(x, 265, anchor=NW,
+                                image=ImageTk.PhotoImage(app.Ddon))
         if note == 'Dkat':
-            canvas.create_image(x, 265, anchor=NW, image=ImageTk.PhotoImage(app.Dkat))
+            canvas.create_image(x, 265, anchor=NW,
+                                image=ImageTk.PhotoImage(app.Dkat))
         if note == 'roll':
-            canvas.create_image(x, 285, anchor=NW, image=ImageTk.PhotoImage(app.roll))
+            canvas.create_image(x, 285, anchor=NW,
+                                image=ImageTk.PhotoImage(app.roll))
 
         if note == 'rollEnd':
             for y in range(int(x + 40), int(end - 90), 10):
-                canvas.create_image(y, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollLine))
-            if end - 80 > x + 80: canvas.create_image(end - 80, 285, anchor=NW, image=ImageTk.PhotoImage(app.rollEnd))
+                canvas.create_image(y, 285, anchor=NW,
+                                    image=ImageTk.PhotoImage(app.rollLine))
+            if end - 80 > x + 80:
+                canvas.create_image(end - 80, 285, anchor=NW,
+                                    image=ImageTk.PhotoImage(app.rollEnd))
             self.drawNote(app, canvas, 'roll', x)
 
     def drawScrollBar(self, app, canvas):
         canvas.create_image(190, 23, anchor=NW, image=app.scrollBar)
 
     def drawScrollMarker(self, app, canvas):
-        canvas.create_image(190 + app.scrollx, 14, anchor=NW, image=app.scrollMarker)
+        canvas.create_image(190 + app.scrollx, 14,
+                            anchor=NW, image=app.scrollMarker)
 
     def getScrollMarkerX(self, app):
         return app.scrollx
@@ -141,7 +172,8 @@ class UI:
 
     def drawSaveScreen(self, app, canvas, levelName, bpm, difficulty):
         canvas.create_image(183, 94, anchor=NW, image=app.saveScreen)
-        canvas.create_text(681, 163, anchor=NW, text=levelName, font='Arial 36')
+        canvas.create_text(681, 163, anchor=NW,
+                           text=levelName, font='Arial 36')
         canvas.create_text(817, 271, anchor=NW, text=str(bpm), font='Arial 36')
         if difficulty == 'easy':
             canvas.create_image(535, 352, anchor=NW, image=app.selection)
@@ -151,20 +183,22 @@ class UI:
             canvas.create_image(935, 352, anchor=NW, image=app.selection)
         canvas.create_image(543, 361, anchor=NW, image=app.difficulties)
 
-
     def drawPlayButton(self, app, canvas):
         canvas.create_image(1151, 14, anchor=NW, image=app.playButton)
 
     def drawIndicator(self, app, canvas):
-        canvas.create_image(app.indicatorx - app.frameLeft, 246, anchor=NW, image=app.indicator)
+        canvas.create_image(app.indicatorx - app.frameLeft,
+                            246, anchor=NW, image=app.indicator)
 
     def drawBeatlines(self, app, canvas):
         for x in range(0, int(app.level.getLength() / 60 * app.level.getBpm())):
-            canvas.create_image(x * app.pixelsPerBeat - app.frameLeft, 246, anchor=NW, image=app.beatLine)
+            canvas.create_image(
+                x * app.pixelsPerBeat - app.frameLeft, 246, anchor=NW, image=app.beatLine)
 
     def setBackground(self, app, file):
         app.background = app.loadImage(file)
-        app.background = ImageTk.PhotoImage(app.scaleImage(app.background, 2.5/2))
+        app.background = ImageTk.PhotoImage(
+            app.scaleImage(app.background, 2.5 / 2))
 
     def drawBackground(self, app, canvas):
         canvas.create_image(0, 0, anchor=NW, image=app.background)

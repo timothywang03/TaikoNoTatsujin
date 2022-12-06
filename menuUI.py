@@ -2,13 +2,20 @@ from cmu_112_graphics import *
 from note import Note, Roll
 import pygame
 
+
 class UI:
     def __init__(self, app):
-        app.menuScreen = ImageTk.PhotoImage(app.loadImage('image_folder/menu/menu.png'))
-        app.difficulties = ImageTk.PhotoImage(app.loadImage('image_folder/menu/difficulties.png'))
-        app.loadLevel = ImageTk.PhotoImage(app.loadImage('image_folder/menu/loadLevel.png'))
-        app.selection = ImageTk.PhotoImage(app.loadImage('image_folder/menu/selection.png'))
-        app.error = ImageTk.PhotoImage(app.loadImage('image_folder/menu/error.png'))
+        # pulled image from https://wallpapercave.com/taiko-wallpapers
+        app.menuScreen = ImageTk.PhotoImage(
+            app.loadImage('image_folder/menu/menu.png'))
+        app.difficulties = ImageTk.PhotoImage(
+            app.loadImage('image_folder/menu/difficulties.png'))
+        app.loadLevel = ImageTk.PhotoImage(
+            app.loadImage('image_folder/menu/loadLevel.png'))
+        app.selection = ImageTk.PhotoImage(
+            app.loadImage('image_folder/menu/selection.png'))
+        app.error = ImageTk.PhotoImage(
+            app.loadImage('image_folder/menu/error.png'))
 
         app.loadScreen = False
         app.clicked = None

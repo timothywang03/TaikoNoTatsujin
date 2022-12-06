@@ -4,13 +4,16 @@ from math import floor
 import pygame
 import time
 
+
 def twoPlayer_keyPressed(app, event):
     if event.key == 's':
         app.topKeysPressed.add('s')
-        if app.topCurrentNote is not None and app.topCurrentNote.getType() == 'roll': app.topRollCounter += 1
+        if app.topCurrentNote is not None and app.topCurrentNote.getType() == 'roll':
+            app.topRollCounter += 1
     if event.key == 'd':
         app.topKeysPressed.add('d')
-        if app.topCurrentNote is not None and app.topCurrentNote.getType() == 'roll': app.topRollCounter += 1
+        if app.topCurrentNote is not None and app.topCurrentNote.getType() == 'roll':
+            app.topRollCounter += 1
     if event.key == 'a':
         app.topKeysPressed.add('a')
     if event.key == 'f':
@@ -18,16 +21,19 @@ def twoPlayer_keyPressed(app, event):
 
     if event.key == 'j':
         app.botKeysPressed.add('j')
-        if app.botCurrentNote is not None and app.botCurrentNote.getType() == 'roll': app.botRollCounter += 1
+        if app.botCurrentNote is not None and app.botCurrentNote.getType() == 'roll':
+            app.botRollCounter += 1
     if event.key == 'k':
         app.botKeysPressed.add('k')
-        if app.botCurrentNote is not None and app.botCurrentNote.getType() == 'roll': app.botRollCounter += 1
+        if app.botCurrentNote is not None and app.botCurrentNote.getType() == 'roll':
+            app.botRollCounter += 1
     if event.key == 'h':
         app.botKeysPressed.add('h')
     if event.key == 'l':
         app.botKeysPressed.add('l')
 
     app.frameLeft += 10
+
 
 def twoPlayer_timerFired(app):
 
@@ -111,6 +117,7 @@ def twoPlayer_timerFired(app):
         app.frameLeft += 20
         app.time += 10
 
+
 def twoPlayer_redrawAll(app, canvas):
     app.ui.drawTopWallpaper(app, canvas, app.topWallpaperx)
     app.ui.drawTopDecorum(app, canvas, app.topDecorumx)
@@ -124,26 +131,38 @@ def twoPlayer_redrawAll(app, canvas):
         topNote = app.topNotes[timestamp]
         botNote = app.botNotes[timestamp]
         if topNote.getHit() is False:
-            app.ui.drawTopNote(app, canvas, topNote.getType(), timestamp - app.frameLeft, topNote.getEnd() - app.frameLeft)
+            app.ui.drawTopNote(app, canvas, topNote.getType(
+            ), timestamp - app.frameLeft, topNote.getEnd() - app.frameLeft)
             if topNote.getType() == 'roll':
-                app.ui.drawTopNote(app, canvas, 'rollEnd', timestamp - app.frameLeft, topNote.getEnd() - app.frameLeft)
+                app.ui.drawTopNote(app, canvas, 'rollEnd', timestamp -
+                                   app.frameLeft, topNote.getEnd() - app.frameLeft)
 
         if botNote.getHit() is False:
-            app.ui.drawBotNote(app, canvas, botNote.getType(), timestamp - app.frameLeft, botNote.getEnd() - app.frameLeft)
+            app.ui.drawBotNote(app, canvas, botNote.getType(
+            ), timestamp - app.frameLeft, botNote.getEnd() - app.frameLeft)
             if botNote.getType() == 'roll':
-                app.ui.drawBotNote(app, canvas, 'rollEnd', timestamp - app.frameLeft, botNote.getEnd() - app.frameLeft)
+                app.ui.drawBotNote(app, canvas, 'rollEnd', timestamp -
+                                   app.frameLeft, botNote.getEnd() - app.frameLeft)
 
     for x in app.topKeysPressed:
-        if x == 'donLeft': app.ui.drawTopDonLeft(app, canvas)
-        if x == 'donRight': app.ui.drawTopDonRight(app, canvas)
-        if x == 'katLeft': app.ui.drawTopKatLeft(app, canvas)
-        if x == 'katRight': app.ui.drawBotKatRight(app, canvas)
+        if x == 'donLeft':
+            app.ui.drawTopDonLeft(app, canvas)
+        if x == 'donRight':
+            app.ui.drawTopDonRight(app, canvas)
+        if x == 'katLeft':
+            app.ui.drawTopKatLeft(app, canvas)
+        if x == 'katRight':
+            app.ui.drawBotKatRight(app, canvas)
 
     for x in app.botKeysPressed:
-        if x == 'donLeft': app.ui.drawBotDonLeft(app, canvas)
-        if x == 'donRight': app.ui.drawBotDonRight(app, canvas)
-        if x == 'katLeft': app.ui.drawBotKatLeft(app, canvas)
-        if x == 'katRight': app.ui.drawBotKatRight(app, canvas)
+        if x == 'donLeft':
+            app.ui.drawBotDonLeft(app, canvas)
+        if x == 'donRight':
+            app.ui.drawBotDonRight(app, canvas)
+        if x == 'katLeft':
+            app.ui.drawBotKatLeft(app, canvas)
+        if x == 'katRight':
+            app.ui.drawBotKatRight(app, canvas)
 
     app.ui.drawTopNoteDecorum(app, canvas)
     app.ui.drawBotNoteDecorum(app, canvas)
@@ -151,8 +170,10 @@ def twoPlayer_redrawAll(app, canvas):
     #app.ui.drawDifficulty(app, canvas)
     app.ui.drawTopScore(app, canvas)
     app.ui.drawBotScore(app, canvas)
-    if app.topStreak >= 10: app.ui.drawTopCombo(app, canvas)
-    if app.botStreak >= 10: app.ui.drawBotCombo(app, canvas)
+    if app.topStreak >= 10:
+        app.ui.drawTopCombo(app, canvas)
+    if app.botStreak >= 10:
+        app.ui.drawBotCombo(app, canvas)
     if app.topCurrentNote is not None and app.topCurrentNote.getType() == 'roll':
         app.ui.drawTopRollFan(app, canvas)
         app.ui.drawBotRollFan(app, canvas)

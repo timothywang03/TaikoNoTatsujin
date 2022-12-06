@@ -4,6 +4,7 @@ import creatorUI
 import playerUI
 import twoPlayerUI
 
+
 def menu_mousePressed(app, event):
     if app.loadScreen is True:
         if 384 <= event.x <= 496 and 394 <= event.y <= 506:
@@ -17,7 +18,8 @@ def menu_mousePressed(app, event):
         if 548 <= event.x <= 732 and 520 <= event.y <= 577:
             if app.clicked == 'creator':
                 if app.diffSelected is not None and app.levelEntered is not None:
-                    app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                    app.level = Level(app.levelEntered, dict(
+                    ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
                     app.level.loadNotes()
                     app.ui = creatorUI.UI(app)
                     app.mode = 'creator'
@@ -26,7 +28,8 @@ def menu_mousePressed(app, event):
 
                     # make sure the level selected exists
                     try:
-                        app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                        app.level = Level(app.levelEntered, dict(
+                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
                         app.level.loadNotes()
                         app.ui = playerUI.UI(app)
                         app.level.initiateSong(app)
@@ -36,9 +39,10 @@ def menu_mousePressed(app, event):
             if app.clicked == 'twoPlayer':
                 if app.diffSelected is not None and app.levelEntered is not None:
                     try:
-                        app.level = Level(app.levelEntered, dict(), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                        app.level = Level(app.levelEntered, dict(
+                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
                         app.level.loadNotes()
-                        app.ui = twoPlayer.UI(app)
+                        app.ui = twoPlayerUI.UI(app)
                         app.level.initiateSong(app)
                         app.mode = 'twoPlayer'
                     except:
@@ -53,6 +57,7 @@ def menu_mousePressed(app, event):
     if 733 <= event.x <= 1133 and 550 <= event.y <= 650:
         app.loadScreen = True
         app.clicked = 'twoPlayer'
+
 
 def menu_redrawAll(app, canvas):
     app.ui.drawMenuBackground(app, canvas)
