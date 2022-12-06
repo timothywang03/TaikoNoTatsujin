@@ -48,15 +48,16 @@ def menu_mousePressed(app, event):
                     except:
                         app.errorDraw = True
 
-    if 733 <= event.x <= 1133 and 150 <= event.y <= 250:
-        app.loadScreen = True
-        app.clicked = 'creator'
-    if 733 <= event.x <= 1133 and 350 <= event.y <= 450:
-        app.loadScreen = True
-        app.clicked = 'player'
-    if 733 <= event.x <= 1133 and 550 <= event.y <= 650:
-        app.loadScreen = True
-        app.clicked = 'twoPlayer'
+    else:
+        if 733 <= event.x <= 1133 and 150 <= event.y <= 250:
+            app.loadScreen = True
+            app.clicked = 'creator'
+        if 733 <= event.x <= 1133 and 350 <= event.y <= 450:
+            app.loadScreen = True
+            app.clicked = 'player'
+        if 733 <= event.x <= 1133 and 550 <= event.y <= 650:
+            app.loadScreen = True
+            app.clicked = 'twoPlayer'
 
 
 def menu_redrawAll(app, canvas):
