@@ -8,7 +8,6 @@ class Result:
         app.win = ImageTk.PhotoImage(app.loadImage('image_folder/result/win.png'))
         app.lose = ImageTk.PhotoImage(app.loadImage('image_folder/result/lose.png'))
         app.topNoteScores = app.level.getNoteScores(1)
-        print(app.topNoteScores)
         app.botNoteScores = app.level.getNoteScores(2)
 
     def drawPlayerOneScore(self, app, canvas):

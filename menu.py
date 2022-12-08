@@ -59,7 +59,6 @@ def menu_mousePressed(app, event):
 
 
 def menu_redrawAll(app, canvas):
-    print(app.clicked)
     app.ui.drawMenuBackground(app, canvas)
     if app.loadScreen is True:
         app.ui.drawLoadLevel(app, canvas)

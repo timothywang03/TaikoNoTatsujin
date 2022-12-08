@@ -84,13 +84,13 @@ class Note:
                     score += 1740
         if self.noteMid - self.good <= self.hit + app.frameLeft <= self.noteMid + self.good:
             score *= 1
-            app.level.scoreNote('good')
+            app.level.scoreNote('good', 1)
         elif self.noteMid - self.ok <= self.hit + app.frameLeft <= self.noteMid + self.ok:
             score *= 0.5
-            app.level.scoreNote('ok')
+            app.level.scoreNote('ok', 1)
         else:
             score *= 0.1
-            app.level.scoreNote('bad')
+            app.level.scoreNote('bad', 1)
         return score
 
     def __repr__(self):

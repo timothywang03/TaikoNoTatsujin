@@ -95,7 +95,6 @@ def twoPlayer_timerFired(app):
                 if app.botCurrentNote.getType() != 'roll':
                     app.botCurrentNote.hitNote(app.indicatorx)
                     if app.botKeysPressed in app.botCurrentNote.getKeys():
-                        print('meow')
                         hit = app.botCurrentNote.hitScore(app)
                         app.botScore += hit
                         app.botStreak += 1
