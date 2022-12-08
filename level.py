@@ -7,7 +7,7 @@ class Level:
         self.name = name
         self.notes = notes      # notes will be in format (timestamp, noteType)
         self.length = length    # indicates the length of the level (in secs)
-        self.difficulty = difficulty  # TODO: create algorithm that will assess the diff
+        self.difficulty = difficulty
         self.bpm = bpm
         self.song = song
         self.players = [[0, 0, 0], [0, 0, 0]]
