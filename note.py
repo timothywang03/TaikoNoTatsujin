@@ -82,12 +82,15 @@ class Note:
                     score += 3480
                 if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1740
-        if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
+        if self.noteMid - self.good <= self.hit + app.frameLeft <= self.noteMid + self.good:
             score *= 1
-        elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
+            app.level.scoreNote('good')
+        elif self.noteMid - self.ok <= self.hit + app.frameLeft <= self.noteMid + self.ok:
             score *= 0.5
+            app.level.scoreNote('ok')
         else:
             score *= 0.1
+            app.level.scoreNote('bad')
         return score
 
     def __repr__(self):
@@ -139,12 +142,15 @@ class PlayerOneNote(Note):
                     score += 3480
                 if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1740
-        if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
+        if self.noteMid - self.good <= self.hit + app.frameLeft <= self.noteMid + self.good:
             score *= 1
-        elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
+            app.level.scoreNote('good', 1)
+        elif self.noteMid - self.ok <= self.hit + app.frameLeft <= self.noteMid + self.ok:
             score *= 0.5
+            app.level.scoreNote('ok', 1)
         else:
             score *= 0.1
+            app.level.scoreNote('bad', 1)
         return score
 
 
@@ -188,12 +194,15 @@ class PlayerTwoNote(Note):
                     score += 3480
                 if self.getType() == 'don' or self.getType() == 'kat':
                     score += 1740
-        if self.noteMid - self.good <= self.hit <= self.noteMid + self.good:
+        if self.noteMid - self.good <= self.hit + app.frameLeft <= self.noteMid + self.good:
             score *= 1
-        elif self.noteMid - self.ok <= self.hit <= self.noteMid + self.ok:
+            app.level.scoreNote('good', 2)
+        elif self.noteMid - self.ok <= self.hit + app.frameLeft <= self.noteMid + self.ok:
             score *= 0.5
+            app.level.scoreNote('ok', 2)
         else:
             score *= 0.1
+            app.level.scoreNote('bad', 2)
         return score
 
 

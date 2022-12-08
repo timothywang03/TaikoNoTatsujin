@@ -4,6 +4,7 @@ from player import *
 from twoPlayer import *
 from title import *
 from menu import *
+from result import *
 
 # ALL IMAGES ARE FROM WEBSITE https://www.spriters-resource.com/nintendo_switch/taikonotatsujindrumnfun/
 # Yoru ni Kakeru downloaded from https://www.youtube.com/watch?v=vEyPvak2K9o&ab_channel=MidnightSoul

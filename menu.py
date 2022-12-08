@@ -19,17 +19,16 @@ def menu_mousePressed(app, event):
             if app.clicked == 'creator':
                 if app.diffSelected is not None and app.levelEntered is not None:
                     app.level = Level(app.levelEntered, dict(
-                    ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                    ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected, 1)
                     app.level.loadNotes()
                     app.ui = creatorUI.UI(app)
                     app.mode = 'creator'
             if app.clicked == 'player':
                 if app.diffSelected is not None and app.levelEntered is not None:
-
                     # make sure the level selected exists
                     try:
                         app.level = Level(app.levelEntered, dict(
-                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected, 1)
                         app.level.loadNotes()
                         app.ui = playerUI.UI(app)
                         app.level.initiateSong(app)
@@ -40,14 +39,13 @@ def menu_mousePressed(app, event):
                 if app.diffSelected is not None and app.levelEntered is not None:
                     try:
                         app.level = Level(app.levelEntered, dict(
-                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected)
+                        ), 34, 130, 'yoru_ni_kakeru.mp3', app.diffSelected, 2)
                         app.level.loadNotes()
                         app.ui = twoPlayerUI.UI(app)
                         app.level.initiateSong(app)
                         app.mode = 'twoPlayer'
                     except:
                         app.errorDraw = True
-
     else:
         if 733 <= event.x <= 1133 and 150 <= event.y <= 250:
             app.loadScreen = True
@@ -61,6 +59,7 @@ def menu_mousePressed(app, event):
 
 
 def menu_redrawAll(app, canvas):
+    print(app.clicked)
     app.ui.drawMenuBackground(app, canvas)
     if app.loadScreen is True:
         app.ui.drawLoadLevel(app, canvas)

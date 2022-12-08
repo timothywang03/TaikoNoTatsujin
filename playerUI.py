@@ -38,7 +38,7 @@ class UI:
         app.currentNote = None
 
         # SCORING VARIABLES
-        app.score = 0
+        app.topScore = 0
         app.streak = 0
         app.rollStarted = False
         app.combo = ImageTk.PhotoImage(
@@ -172,20 +172,20 @@ class UI:
     def drawScore(self, app, canvas):
 
         # draws each digit of the current score
-        if app.score >= 10000:
+        if app.topScore >= 10000:
             canvas.create_image(62, 390, anchor=NW, image=ImageTk.PhotoImage(
-                app.scaleImage(app.numbers[app.score // 10000 % 10], 35 / 57)))
-        if app.score >= 1000:
+                app.scaleImage(app.numbers[app.topScore // 10000 % 10], 35 / 57)))
+        if app.topScore >= 1000:
             canvas.create_image(89, 390, anchor=NW, image=ImageTk.PhotoImage(
-                app.scaleImage(app.numbers[app.score // 1000 % 10], 35 / 57)))
-        if app.score >= 100:
+                app.scaleImage(app.numbers[app.topScore // 1000 % 10], 35 / 57)))
+        if app.topScore >= 100:
             canvas.create_image(116, 390, anchor=NW, image=ImageTk.PhotoImage(
-                app.scaleImage(app.numbers[app.score // 100 % 10], 35 / 57)))
-        if app.score >= 10:
+                app.scaleImage(app.numbers[app.topScore // 100 % 10], 35 / 57)))
+        if app.topScore >= 10:
             canvas.create_image(144, 390, anchor=NW, image=ImageTk.PhotoImage(
-                app.scaleImage(app.numbers[app.score // 10 % 10], 35 / 57)))
+                app.scaleImage(app.numbers[app.topScore // 10 % 10], 35 / 57)))
         canvas.create_image(170, 390, anchor=NW, image=ImageTk.PhotoImage(
-            app.scaleImage(app.numbers[app.score % 10], 35 / 57)))
+            app.scaleImage(app.numbers[app.topScore % 10], 35 / 57)))
 
     def drawCombo(self, app, canvas):
         if app.streak > 9:

@@ -1,6 +1,7 @@
 from note import Note, Roll
 from level import Level
 from math import floor
+import result
 import pygame
 import time
 
@@ -31,6 +32,11 @@ def player_timerFired(app):
             app.noteQueue.pop(0)
             app.currentNote = None
             app.rollStarted = False
+    else:
+        app.mode = 'result'
+        app.ui = result.Result(app)
+        pygame.mixer.music.stop()
+        return
 
     if len(app.noteQueue) > 0:
         if app.noteQueue[0].getNoteStart() - app.frameLeft <= app.indicatorx <= app.noteQueue[0].getEnd() - app.frameLeft:
@@ -45,13 +51,13 @@ def player_timerFired(app):
                     app.currentNote.hitNote(app.indicatorx)
                     if app.keysPressed in app.currentNote.getKeys():
                         hit = app.currentNote.hitScore(app)
-                        app.score += hit
+                        app.topScore += hit
                         app.streak += 1
                     else:
                         app.streak = 0
                     app.currentNote = None
                 else:
-                    app.score += app.currentNote.hitScore(app)
+                    app.topScore += app.currentNote.hitScore(app)
 
         app.keysPressed = set()
 

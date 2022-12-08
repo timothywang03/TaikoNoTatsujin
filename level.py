@@ -3,17 +3,31 @@ from note import Note, Roll
 
 
 class Level:
-    def __init__(self, name, notes, length, bpm, song, difficulty):
+    def __init__(self, name, notes, length, bpm, song, difficulty, players):
         self.name = name
         self.notes = notes      # notes will be in format (timestamp, noteType)
         self.length = length    # indicates the length of the level (in secs)
         self.difficulty = difficulty  # TODO: create algorithm that will assess the diff
         self.bpm = bpm
         self.song = song
-        self.best_score = 0
-        self.ok = 0
-        self.good = 0
-        self.bad = 0
+        self.players = [[0, 0, 0], [0, 0, 0]]
+        self.numPlayers = players
+
+    def scoreNote(self, score, player):
+        if player == 1:
+            if score == 'ok':
+                self.players[0][0] += 1
+            elif score == 'good':
+                self.players[0][1] += 1
+            else:
+                self.players[0][2] += 1
+        else:
+            if score == 'ok':
+                self.players[1][0] += 1
+            elif score == 'good':
+                self.players[1][1] += 1
+            else:
+                self.players[1][2] += 1
 
     def calcScore(self):
         pass
@@ -29,9 +43,6 @@ class Level:
 
     def setBpm(self, bpm):
         self.bpm = bpm
-
-    def getBestScore(self):
-        return self.best_score
 
     def getDifficulty(self):
         return self.difficulty
@@ -57,6 +68,12 @@ class Level:
 
     def removeNote(self, timestamp):
         del self.notes[timestamp]
+
+    def getNoteScores(self, player):
+        return self.players[player - 1]
+
+    def getPlayers(self):
+        return self.numPlayers
 
     def saveLevel(self):
         f = open(f'levels/{self.name}_{self.difficulty}.txt', 'w')

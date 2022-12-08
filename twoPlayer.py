@@ -1,6 +1,7 @@
 from note import Note, Roll, PlayerOneNote, PlayerTwoNote
 from level import Level
 from math import floor
+import result
 import pygame
 import time
 
@@ -49,6 +50,11 @@ def twoPlayer_timerFired(app):
             app.topCurrentNote = None
             app.rollStarted = False
             app.topRollCounter = 0
+    else:
+        app.mode = 'result'
+        app.ui = result.Result(app)
+        pygame.mixer.music.stop()
+        return
 
     if len(app.botNoteQueue) > 0:
         if app.indicatorx > app.botNoteQueue[0].getEnd() - app.frameLeft:
@@ -89,6 +95,7 @@ def twoPlayer_timerFired(app):
                 if app.botCurrentNote.getType() != 'roll':
                     app.botCurrentNote.hitNote(app.indicatorx)
                     if app.botKeysPressed in app.botCurrentNote.getKeys():
+                        print('meow')
                         hit = app.botCurrentNote.hitScore(app)
                         app.botScore += hit
                         app.botStreak += 1
